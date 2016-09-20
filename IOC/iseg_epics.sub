@@ -1,0 +1,21 @@
+## this file is loaded via "dbLoadTemplate" from the IOC
+file "/mnt/user/data/config/iseg_epics_1.db"
+{
+pattern {DEV,CAN_LINE,DEVICE_ID,MODULE_ID,CHANNEL_ID}
+{HADES:RICH:HV:CR1,0,1000,0,0}
+{HADES:RICH:HV:CR1,0,1000,0,1}
+{HADES:RICH:HV:CR1,0,1000,0,2}
+{HADES:RICH:HV:CR1,0,1000,0,3}
+{HADES:RICH:HV:CR1,0,1000,0,4}
+{HADES:RICH:HV:CR1,0,1000,0,5}
+{HADES:RICH:HV:CR1,0,1000,0,6}
+{HADES:RICH:HV:CR1,0,1000,0,7}
+}
+
+
+file "/mnt/user/data/config/iseg_epics_2.db"
+{
+pattern {DEV,CAN_LINE,GROUP,CH_SEL_MOD_0,CH_SEL_MOD_1,CH_SEL_MOD_2,CH_SEL_MOD_3,CH_SEL_MOD_4,CH_SEL_MOD_5}
+{HADES:RICH:HV:CR1,0,G1,  7,0,0,0,0,0}
+{HADES:RICH:HV:CR1,0,G2,128,0,0,0,0,0}
+}

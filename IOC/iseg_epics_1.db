@@ -1,0 +1,2031 @@
+#######################################################################
+# ###                                                             ### #
+# ### EPICS Database for                                          ### #
+# ###   iseg HAL                                                  ### #
+# ###                                                             ### #
+# ### author: J. Roemer, F.Feldbauer                              ### #
+# ###                                                             ### #
+# ### Ref 1.0; 2015-06-02                                         ### #
+# ###                                                             ### #
+# ### macros: CONTROLLER_SN    serial number of crate controller  ### #
+# ###         CAN_LINE    CAN line ID                             ### #
+# ###         CRATE_ID    crate address                           ### #
+# ###         MODULE_ID   module address                          ### #
+# ###         CHANNEL_ID  HV channel address                      ### #
+#######################################################################
+
+
+#######################################################################
+# ###  								  ### #
+# ###  Code adopted to HADES RICH by Adrian Weber                 ### #
+# ###                                                             ### #
+#######################################################################
+
+
+###############################
+# ### CAN_System item values ##
+###############################
+
+record( stringin, "${DEV}:Status" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@Status can0" )	
+  field( FLNK, "${DEV}:BitRate" )
+  field( TSE,  "-2" )
+}
+
+record( longin, "${DEV}:BitRate" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@BitRate can0" )
+  field( TSE,  "-2" )
+}	
+
+record( longin, "${DEV}:ModuleNumber" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@ModuleNumber can0" )
+  field( FLNK, "${DEV}:CrateNumber" )
+  field( TSE,  "-2" )
+}
+
+record( longin, "${DEV}:CrateNumber" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@CrateNumber can0" )
+  field( FLNK, "${DEV}:CrateList" )
+  field( TSE,  "-2" )
+}
+
+record( stringin, "${DEV}:CrateList" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@CrateList can0" )
+  field( FLNK, "${DEV}:CycleCounter" )
+  field( TSE,  "-2" )
+}
+
+record( longin, "${DEV}:CycleCounter" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@CycleCounter can0" )
+  field( TSE,  "-2" )
+}
+
+#############################
+# ### CAN_Line item values ##
+#############################
+
+record( stringin, "${DEV}:${CAN_LINE}:Status" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.Status can0" )
+  field( FLNK, "${DEV}:${CAN_LINE}:BitRate" )
+  field( TSE,  "-2" )
+}
+
+record( longin, "${DEV}:${CAN_LINE}:BitRate" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.BitRate can0" )
+  field( TSE,  "-2" )
+}
+
+record( longin, "${DEV}:${CAN_LINE}:ModuleNumber" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.ModuleNumber can0" )
+  field( FLNK, "${DEV}:${CAN_LINE}:ModuleList" )
+  field( TSE,  "-2" )
+}
+
+record( stringin, "${DEV}:${CAN_LINE}:ModuleList" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.ModuleList can0" )
+  field( FLNK, "${DEV}:${CAN_LINE}:CrateNumber" )
+  field( TSE,  "-2" )
+}
+
+record( longin, "${DEV}:${CAN_LINE}:CrateNumber" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.CrateNumber can0" )
+  field( FLNK, "${DEV}:${CAN_LINE}:CrateList" )
+  field( TSE,  "-2" )
+}
+
+record( stringin, "${DEV}:${CAN_LINE}:CrateList" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.CrateList can0" )
+  field( TSE,  "-2" )
+}
+
+#############################
+# ### Crate item values ### #
+#############################
+
+record( mbbiDirect, "${DEV}:${CAN_LINE}:${DEVICE_ID}:StatusLow" ) {
+  field( DESC, "Lower 16 bit of module status register" )
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${DEVICE_ID}.Status can0" )
+  field( NOBT, "16" )
+  field( SHFT, "0" )
+  field( TSE,  "-2" )
+}
+
+record( mbbiDirect, "${DEV}:${CAN_LINE}:${DEVICE_ID}:StatusHigh" ) {
+  field( DESC, "Upper 16 bit of module status register" )
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${DEVICE_ID}.Status can0" )
+  field( NOBT, "16" )
+  field( SHFT, "16" )  ## shift the value by 16 bits to the right
+  field( TSE,  "-2" )
+}
+
+# Alternative way to read out the status:
+# In this case only the calc record needs to be triggered
+
+#record( longin, "${DEV}:${CAN_LINE}:${DEVICE_ID}:StatusRead__" ) {
+#  field( DTYP, "isegHAL" )
+#  field( INP,  "@${CAN_LINE}.${DEVICE_ID}.Status can0" )
+#}
+#record( calc, "${DEV}:${CAN_LINE}:${DEVICE_ID}:StatusSplit__" ) {
+#  ## PP = Passive Process: Force the other record to process before sending the value
+#  field( INPA, "${DEV}:${CAN_LINE}:${DEVICE_ID}:StatusRead PP" )
+#
+#  field( INPB, "0x0000ffff" )
+#  field( INPC, "0xffff0000" )
+#
+#  ## First, set field D to ( field A bitwise AND field B ),
+#  ## then set field VAL to ( field A bitwise AND field C ) right shifted by 16 bit
+#  field( CALC, "d:=(A&B); (A&C)>>16" )
+#}
+#record( mbbiDirect, "${DEV}:${CAN_LINE}:${DEVICE_ID}:StatusLow" ) {
+#  field( DTYP, "Soft Channel" )
+#  field( INP,  "${DEV}:${CAN_LINE}:${DEVICE_ID}:StatusSplit__.D CP" )
+#}
+#record( mbbiDirect, "${DEV}:${CAN_LINE}:${DEVICE_ID}:StatusHigh" ) {
+#  field( DTYP, "Soft Channel" )
+#  field( INP,  "${DEV}:${CAN_LINE}:${DEVICE_ID}:StatusSplit__.VAL CP" )
+#}
+
+record( mbbiDirect, "${DEV}:${CAN_LINE}:${DEVICE_ID}:EventStatusLow" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${DEVICE_ID}.EventStatus can0" )
+  field( NOBT, "16" )
+  field( SHFT, "0" )
+  field( TSE,  "-2" )
+}
+
+record( mbbiDirect, "${DEV}:${CAN_LINE}:${DEVICE_ID}:EventStatusHigh" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${DEVICE_ID}.EventStatus can0" )
+  field( NOBT, "16" )
+  field( SHFT, "16" )
+  field( TSE,  "-2" )
+}
+record( longout, "${DEV}:${CAN_LINE}:${DEVICE_ID}:EventMask" ) {
+  field( DTYP, "isegHAL" )
+  field( OUT,  "@${CAN_LINE}.${DEVICE_ID}.EventMask can0" )
+  field( TSE,  "-2" )
+}
+record( ai, "${DEV}:${CAN_LINE}:${DEVICE_ID}:FanSpeed" ) {
+  field( SCAN, "1 second")
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${DEVICE_ID}.FanSpeed can0" )
+  field( TSE,  "-2" )
+}
+
+record( bo, "${DEV}:${CAN_LINE}:${DEVICE_ID}:Control:0" ) {
+  field( DTYP, "isegHAL" )
+  field( OUT,  "@${CAN_LINE}.${DEVICE_ID}.Control:0 can0" )
+  field( ZNAM, "" )
+  field( ONAM, "doClear" )
+  field( TSE,  "-2" )
+}
+
+
+record( longin, "${DEV}:${CAN_LINE}:${DEVICE_ID}:SerialNumber" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${DEVICE_ID}.SerialNumber can0" )
+  field( TSE,  "-2" )
+}
+
+record( bo, "${DEV}:${CAN_LINE}:${DEVICE_ID}:PowerOn" ) {
+  field( DTYP, "isegHAL" )
+  field( OUT,  "@${CAN_LINE}.${DEVICE_ID}.PowerOn can0" )
+  field( TSE,  "-2" )
+  field( ZNAM, "Off" )
+  field( ONAM, "On" )
+}
+
+record( stringin, "${DEV}:${CAN_LINE}:${DEVICE_ID}:FirmwareRelease" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${DEVICE_ID}.FirmwareRelease can0" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${DEVICE_ID}:FirmwareName" )
+  field( TSE,  "-2" )
+}
+
+record( stringin, "${DEV}:${CAN_LINE}:${DEVICE_ID}:FirmwareName" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${DEVICE_ID}.FirmwareName can0" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${DEVICE_ID}:Article" )
+  field( TSE,  "-2" )
+}
+
+record( stringin, "${DEV}:${CAN_LINE}:${DEVICE_ID}:Article" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${DEVICE_ID}.Article can0" )
+  field( TSE,  "-2" )
+}
+
+
+##############################
+# ### Module item values ### #
+##############################
+
+record( mbbiDirect, "${DEV}:${CAN_LINE}:${MODULE_ID}:Status" ) {
+  field( DESC, "Lower 16 bit of module status register" )
+  field( SCAN, "1 second" )
+  field( DTYP, "isegHAL" )
+  field( DISV, "0" )  ## Disable Value (if value linked by SDIS == DISV record is disabled)
+  field( SDIS, "${DEV}:${CAN_LINE}:${DEVICE_ID}:PowerOn" )
+  field( INP,  "@${CAN_LINE}.${MODULE_ID}.Status can0" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:EventStatus" ) ## Build read out chains
+  field( TSE,  "-2" )
+}
+
+record( mbbiDirect, "${DEV}:${CAN_LINE}:${MODULE_ID}:EventStatus" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${MODULE_ID}.EventStatus can0" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:EventMask" )
+  field( TSE,  "-2" )
+}
+record( longout, "${DEV}:${CAN_LINE}:${MODULE_ID}:EventMask" ) {
+  field( DTYP, "isegHAL" )
+  field( OUT,  "@${CAN_LINE}.${MODULE_ID}.EventMask can0" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:Temperature" )
+  field( TSE,  "-2" )
+}
+
+record( bo, "${DEV}:${CAN_LINE}:${MODULE_ID}:Control:doClear" ) {
+  field( DTYP, "isegHAL" )
+  field( OUT,  "@${CAN_LINE}.${MODULE_ID}.Control:6 can0" )
+  field( ZNAM, "" )
+  field( ONAM, "doClear" )
+  field( TSE,  "-2" )
+}
+
+record( bo, "${DEV}:${CAN_LINE}:${MODULE_ID}:Control:setFineAdjustment" ) {
+  field( DTYP, "isegHAL" )
+  field( OUT,  "@${CAN_LINE}.${MODULE_ID}.Control:12 can0" )
+  field( ZNAM, "FineAdjustment off" )
+  field( ONAM, "FineAdjustment on" )
+  field( TSE,  "-2" )
+}
+
+record( bo, "${DEV}:${CAN_LINE}:${MODULE_ID}:Control:setKillEnable" ) {
+  field( DTYP, "isegHAL" )
+  field( OUT,  "@${CAN_LINE}.${MODULE_ID}.Control:14 can0" )
+  field( ZNAM, "KillEnable off" )
+  field( ONAM, "KillEnable on" )
+  field( TSE,  "-2" )
+}
+
+record( ao, "${DEV}:${CAN_LINE}:${MODULE_ID}:VoltageRampSpeed" ) {
+  field( DTYP, "isegHAL" )
+  field( OUT,  "@${CAN_LINE}.${MODULE_ID}.VoltageRampSpeed can0" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:CurrentRampSpeed" )
+  field( TSE,  "-2" )
+}
+
+record( ao, "${DEV}:${CAN_LINE}:${MODULE_ID}:CurrentRampSpeed" ) {
+  field( DTYP, "isegHAL" )
+  field( OUT,  "@${CAN_LINE}.${MODULE_ID}.CurrentRampSpeed can0" )
+  field( TSE,  "-2" )
+}
+
+record( ai, "${DEV}:${CAN_LINE}:${MODULE_ID}:VoltageLimit" ) {
+  field( SCAN, "1 second")
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${MODULE_ID}.VoltageLimit can0" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:CurrentLimit" )
+  field( TSE,  "-2" )
+}
+
+record( ai, "${DEV}:${CAN_LINE}:${MODULE_ID}:CurrentLimit" ) {
+  field( SCAN, "1 second")
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${MODULE_ID}.CurrentLimit can0" )
+  field( TSE,  "-2" )
+}
+
+record( ai, "${DEV}:${CAN_LINE}:${MODULE_ID}:Temperature" ) {
+  field( SCAN, "1 second")
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${MODULE_ID}.Temperature can0" )
+  field( TSE,  "-2" )
+}
+
+record( longin, "${DEV}:${CAN_LINE}:${MODULE_ID}:SerialNumber" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${MODULE_ID}.SerialNumber can0" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:ChannelNumber" )
+  field( TSE,  "-2" )
+}
+
+record( longin, "${DEV}:${CAN_LINE}:${MODULE_ID}:ChannelNumber" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${MODULE_ID}.ChannelNumber can0" )
+  field( TSE,  "-2" )
+}
+
+record( longin, "${DEV}:${CAN_LINE}:${MODULE_ID}:SampleRate" ) {
+  field( DTYP, "isegHAL" )
+  field( SCAN, "1 second")
+  field( INP,  "@${CAN_LINE}.${MODULE_ID}.SampleRate can0" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:DigitalFilter" )
+  field( TSE,  "-2" )
+}
+
+record( longin, "${DEV}:${CAN_LINE}:${MODULE_ID}:DigitalFilter" ) {
+  field( DTYP, "isegHAL" )
+  field( SCAN, "1 second")
+  field( INP,  "@${CAN_LINE}.${MODULE_ID}.DigitalFilter can0" )
+  field( TSE,  "-2" )
+}
+
+record( stringin, "${DEV}:${CAN_LINE}:${MODULE_ID}:FirmwareRelease" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${MODULE_ID}.FirmwareRelease can0" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:FirmwareName" )
+  field( TSE,  "-2" )
+}
+
+record( stringin, "${DEV}:${CAN_LINE}:${MODULE_ID}:FirmwareName" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${MODULE_ID}.FirmwareName can0" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:Article" )
+  field( TSE,  "-2" )
+}
+
+record( stringin, "${DEV}:${CAN_LINE}:${MODULE_ID}:Article" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${MODULE_ID}.Article can0" )
+  field( TSE,  "-2" )
+}
+
+#####################################
+# ### Decoding of Module Status ### #
+#####################################
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:isAdjustment" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:Status.B0 can0" )
+  field( SCAN, "1 second" )
+  field( ZNAM, "off" )
+  field( ONAM, "on" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "NO_ALARM" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:Status:isLiveInsertion" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:Status.B2 can0" )
+  field( SCAN, "1 second" )
+  field( ZNAM, "off" )
+  field( ONAM, "on" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "NO_ALARM" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:needService" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:Status.B4 can0" )
+  field( SCAN, "1 second" )
+  field( ZNAM, "ok" )
+  field( ONAM, "Hardware failure detected" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:isInputError" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:Status.B6 CP can0" )
+  field( SCAN, "1 second" )
+  field( ZNAM, "ok" )
+  field( ONAM, "Error" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MINOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:isNoSumError" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:Status.B8 CP can0" )
+  field( SCAN, "1 second" )
+  field( ZNAM, "Error" )
+  field( ONAM, "ok" )
+  field( ZSV,  "MAJOR" )
+  field( OSV,  "NO_ALARM" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:isNoRamp" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:Status.B9 CP can0" )
+  field( SCAN, "1 second" )
+  field( ZNAM, "channel is ramping" )
+  field( ONAM, "all channels stable" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "NO_ALARM" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:isSafetyLoopGood" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:Status.BA CP can0" )
+  field( SCAN, "1 second" )
+  field( ZNAM, "broken" )
+  field( ONAM, "closed" )
+  field( ZSV,  "MAJOR" )
+  field( OSV,  "NO_ALARM" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:isEventActive" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:Status.BB CP can0" )
+  field( SCAN, "1 second" )
+  field( ZNAM, "no active Event" )
+  field( ONAM, "any event active" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "NO_ALARM" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:isModuleGood" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:Status.BC CP can0" )
+  field( SCAN, "1 second" )
+  field( ZNAM, "failure" )
+  field( ONAM, "ok" )
+  field( ZSV,  "MAJOR" )
+  field( OSV,  "NO_ALARM" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:isSuppliesGood" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:Status.BD CP can0" )
+  field( SCAN, "1 second" )
+  field( ZNAM, "Out of Range" )
+  field( ONAM, "ok" )
+  field( ZSV,  "MAJOR" )
+  field( OSV,  "NO_ALARM" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:isTemperatureGood" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:Status.BE CP can0" )
+  field( SCAN, "1 second" )
+  field( ZNAM, "above 55 degC" )
+  field( ONAM, "within range" )
+  field( ZSV,  "MAJOR" )
+  field( OSV,  "NO_ALARM" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:isKillEnable" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:Status.BF can0" )
+  field( SCAN, "1 second" )
+  field( ZNAM, "disabled" )
+  field( ONAM, "enabled" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "NO_ALARM" )
+}
+
+###########################################
+# ### Decoding of Module Event Status ### #
+###########################################
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:EventLiveInsertion" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:EventStatus.B2 CP can0" )
+  field( ZNAM, "off" )
+  field( ONAM, "on" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "NO_ALARM" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:EventService" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:EventStatus.B4 CP can0" )
+  field( ZNAM, "-" )
+  field( ONAM, "Hardware failure detected" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:EventInputError" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:EventStatus.B6 CP can0" )
+  field( ZNAM, "-" )
+  field( ONAM, "Input Error in connection" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:EventSafetyLoopNotGood" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:EventStatus.BA CP can0" )
+  field( ZNAM, "-" )
+  field( ONAM, "Safety loop open" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:EventSuppliesNotGood" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:EventStatus.BD CP can0" )
+  field( ZNAM, "-" )
+  field( ONAM, "Supply is not good" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:EventTemperatureNotGood" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:EventStatus.BD CP can0" )
+  field( ZNAM, "-" )
+  field( ONAM, "Temperature above 55 degC" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+
+
+###########################################################################
+###################      Group Behaviour         ##########################
+###########################################################################
+
+record( mbboDirect, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection") {
+  #field( DESC, "Set this PV to activate Group behavior of this channel.")
+  field( OUT, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSelection1.VAL PP")
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection2 PP")
+}
+
+record( mbbiDirect, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection2") {  #right shift
+  field( DTYP, "Raw Soft Channel" )
+  field( NOBT, "8")
+  field( SHFT, "8")
+  field( INP, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection.VAL") 
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection3 PP")
+}
+
+record( mbboDirect, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection3") {
+  #field( DESC, "Set this PV to activate Group behavior of this channel.")
+  field( DTYP, "Raw Soft Channel" )
+  field( OMSL, "closed_loop")
+  field( DOL, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection2.VAL")
+  field( OUT, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSelection2.VAL PP")
+
+}
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSelection1")
+{
+  field( SELM, "All")
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSwitchOn1.SELN")
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetVoltage1.SELN")
+  field( OUTC, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetCurrent1.SELN")
+  field( OUTD, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetDelayedTripTime1.SELN")
+  field( OUTE, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetVoltageBounds1.SELN")
+  field( OUTF, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetCurrentBounds1.SELN")
+  field( OUTG, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetEmergancy1.SELN")
+}
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSelection2")
+{
+  field( SELM, "All")
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSwitchOn2.SELN")
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetVoltage2.SELN")
+  field( OUTC, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetCurrent2.SELN")
+  field( OUTD, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetDelayedTripTime2.SELN")
+  field( OUTE, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetVoltageBounds2.SELN")
+  field( OUTF, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetCurrentBounds2.SELN")
+  field( OUTG, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetEmergancy2.SELN")
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:StartBehaviour PP")
+}
+
+record(dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:StartBehaviour")
+{
+   field( SELM, "Mask")
+   field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSetVoltage.VAL PP")
+   field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSwitchOn.VAL PP")
+   field( OUTC, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSetCurrent.VAL PP")
+   field( OUTD, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSetDelayedTripTime.VAL PP")
+   field( OUTE, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSetVoltageBounds.VAL PP")
+   field( OUTF, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSetCurrentBounds.VAL PP")
+   field( OUTG, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSetEmergancy.VAL PP")
+}
+
+
+###################################################################################
+################      Set Group Voltage in Group Behaviour      ###################
+###################################################################################
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSetVoltage" ) {
+  field( SELM, "All")
+  field( EGU, "V")
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetVoltage1.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetVoltage2.VAL PP" )
+}
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetVoltage1")
+{
+  field( SELM, "Mask" )
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:0:VoltageSet.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:1:VoltageSet.VAL PP" )
+  field( OUTC, "${DEV}:${CAN_LINE}:${MODULE_ID}:2:VoltageSet.VAL PP" )
+  field( OUTD, "${DEV}:${CAN_LINE}:${MODULE_ID}:3:VoltageSet.VAL PP" )
+  field( OUTE, "${DEV}:${CAN_LINE}:${MODULE_ID}:4:VoltageSet.VAL PP" )
+  field( OUTF, "${DEV}:${CAN_LINE}:${MODULE_ID}:5:VoltageSet.VAL PP" )
+  field( OUTG, "${DEV}:${CAN_LINE}:${MODULE_ID}:6:VoltageSet.VAL PP" )
+  field( OUTH, "${DEV}:${CAN_LINE}:${MODULE_ID}:7:VoltageSet.VAL PP" )
+}
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetVoltage2")
+{
+  field( SELM, "Mask" )
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:8:VoltageSet.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:9:VoltageSet.VAL PP" )
+  field( OUTC, "${DEV}:${CAN_LINE}:${MODULE_ID}:10:VoltageSet.VAL PP" )
+  field( OUTD, "${DEV}:${CAN_LINE}:${MODULE_ID}:11:VoltageSet.VAL PP" )
+  field( OUTE, "${DEV}:${CAN_LINE}:${MODULE_ID}:12:VoltageSet.VAL PP" )
+  field( OUTF, "${DEV}:${CAN_LINE}:${MODULE_ID}:13:VoltageSet.VAL PP" )
+  field( OUTG, "${DEV}:${CAN_LINE}:${MODULE_ID}:14:VoltageSet.VAL PP" )
+  field( OUTH, "${DEV}:${CAN_LINE}:${MODULE_ID}:15:VoltageSet.VAL PP" )
+}
+
+
+###################################################################################
+################      Set Group Current in Group Behaviour      ###################
+###################################################################################
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSetCurrent" ) {
+  field( SELM, "All")
+  field( EGU, "A")
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetCurrent1.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetCurrent2.VAL PP" )
+}
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetCurrent1")
+{
+  field( SELM, "Mask" )
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:0:CurrentSet.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:1:CurrentSet.VAL PP" )
+  field( OUTC, "${DEV}:${CAN_LINE}:${MODULE_ID}:2:CurrentSet.VAL PP" )
+  field( OUTD, "${DEV}:${CAN_LINE}:${MODULE_ID}:3:CurrentSet.VAL PP" )
+  field( OUTE, "${DEV}:${CAN_LINE}:${MODULE_ID}:4:CurrentSet.VAL PP" )
+  field( OUTF, "${DEV}:${CAN_LINE}:${MODULE_ID}:5:CurrentSet.VAL PP" )
+  field( OUTG, "${DEV}:${CAN_LINE}:${MODULE_ID}:6:CurrentSet.VAL PP" )
+  field( OUTH, "${DEV}:${CAN_LINE}:${MODULE_ID}:7:CurrentSet.VAL PP" )
+}
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetCurrent2")
+{
+  field( SELM, "Mask" )
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:8:CurrentSet.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:9:CurrentSet.VAL PP" )
+  field( OUTC, "${DEV}:${CAN_LINE}:${MODULE_ID}:10:CurrentSet.VAL PP" )
+  field( OUTD, "${DEV}:${CAN_LINE}:${MODULE_ID}:11:CurrentSet.VAL PP" )
+  field( OUTE, "${DEV}:${CAN_LINE}:${MODULE_ID}:12:CurrentSet.VAL PP" )
+  field( OUTF, "${DEV}:${CAN_LINE}:${MODULE_ID}:13:CurrentSet.VAL PP" )
+  field( OUTG, "${DEV}:${CAN_LINE}:${MODULE_ID}:14:CurrentSet.VAL PP" )
+  field( OUTH, "${DEV}:${CAN_LINE}:${MODULE_ID}:15:CurrentSet.VAL PP" )
+}
+
+
+###################################################################################
+############      Set Group DelayedtripTime in Group Behaviour      ###############
+###################################################################################
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSetDelayedTripTime" ) {
+  field( SELM, "All")
+  field( EGU, "A")
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetDelayedTripTime1.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetDelayedTripTime2.VAL PP" )
+}
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetDelayedTripTime1")
+{
+  field( SELM, "Mask" )
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:0:DelayedTripTime.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:1:DelayedTripTime.VAL PP" )
+  field( OUTC, "${DEV}:${CAN_LINE}:${MODULE_ID}:2:DelayedTripTime.VAL PP" )
+  field( OUTD, "${DEV}:${CAN_LINE}:${MODULE_ID}:3:DelayedTripTime.VAL PP" )
+  field( OUTE, "${DEV}:${CAN_LINE}:${MODULE_ID}:4:DelayedTripTime.VAL PP" )
+  field( OUTF, "${DEV}:${CAN_LINE}:${MODULE_ID}:5:DelayedTripTime.VAL PP" )
+  field( OUTG, "${DEV}:${CAN_LINE}:${MODULE_ID}:6:DelayedTripTime.VAL PP" )
+  field( OUTH, "${DEV}:${CAN_LINE}:${MODULE_ID}:7:DelayedTripTime.VAL PP" )
+}
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetDelayedTripTime2")
+{
+  field( SELM, "Mask" )
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:8:DelayedTripTime.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:9:DelayedTripTime.VAL PP" )
+  field( OUTC, "${DEV}:${CAN_LINE}:${MODULE_ID}:10:DelayedTripTime.VAL PP" )
+  field( OUTD, "${DEV}:${CAN_LINE}:${MODULE_ID}:11:DelayedTripTime.VAL PP" )
+  field( OUTE, "${DEV}:${CAN_LINE}:${MODULE_ID}:12:DelayedTripTime.VAL PP" )
+  field( OUTF, "${DEV}:${CAN_LINE}:${MODULE_ID}:13:DelayedTripTime.VAL PP" )
+  field( OUTG, "${DEV}:${CAN_LINE}:${MODULE_ID}:14:DelayedTripTime.VAL PP" )
+  field( OUTH, "${DEV}:${CAN_LINE}:${MODULE_ID}:15:DelayedTripTime.VAL PP" )
+}
+
+
+###################################################################################
+################      Set Group SwitchOn in Group Behaviour      ##################
+###################################################################################
+
+record( bo, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSwitchOn") {
+  #field( DESC, "Set this PV to activate Group behavior of this channel.")
+  field( OUT, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSwitchOn.VAL PP" )
+}
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSwitchOn")
+{
+  field( SELM, "All" )
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSwitchOn1.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSwitchOn2.VAL PP" )
+}
+
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSwitchOn1")
+{
+  field( SELM, "Mask" )
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:0:Control:setOn.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:1:Control:setOn.VAL PP" )
+  field( OUTC, "${DEV}:${CAN_LINE}:${MODULE_ID}:2:Control:setOn.VAL PP" )
+  field( OUTD, "${DEV}:${CAN_LINE}:${MODULE_ID}:3:Control:setOn.VAL PP" )
+  field( OUTE, "${DEV}:${CAN_LINE}:${MODULE_ID}:4:Control:setOn.VAL PP" )
+  field( OUTF, "${DEV}:${CAN_LINE}:${MODULE_ID}:5:Control:setOn.VAL PP" )
+  field( OUTG, "${DEV}:${CAN_LINE}:${MODULE_ID}:6:Control:setOn.VAL PP" )
+  field( OUTH, "${DEV}:${CAN_LINE}:${MODULE_ID}:7:Control:setOn.VAL PP" )
+}
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSwitchOn2")
+{
+  field( SELM, "Mask" )
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:8:Control:setOn.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:9:Control:setOn.VAL PP" )
+  field( OUTC, "${DEV}:${CAN_LINE}:${MODULE_ID}:10:Control:setOn.VAL PP" )
+  field( OUTD, "${DEV}:${CAN_LINE}:${MODULE_ID}:11:Control:setOn.VAL PP" )
+  field( OUTE, "${DEV}:${CAN_LINE}:${MODULE_ID}:12:Control:setOn.VAL PP" )
+  field( OUTF, "${DEV}:${CAN_LINE}:${MODULE_ID}:13:Control:setOn.VAL PP" )
+  field( OUTG, "${DEV}:${CAN_LINE}:${MODULE_ID}:14:Control:setOn.VAL PP" )
+  field( OUTH, "${DEV}:${CAN_LINE}:${MODULE_ID}:15:Control:setOn.VAL PP" )
+}
+
+
+###################################################################################
+##############     Set Group VoltageBounds in Group Behaviour      ################
+###################################################################################
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSetVoltageBounds" ) {
+  field( SELM, "All")
+  field( EGU, "A")
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetVoltageBounds1.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetVoltageBounds2.VAL PP" )
+}
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetVoltageBounds1")
+{
+  field( SELM, "Mask" )
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:0:VoltageBounds.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:1:VoltageBounds.VAL PP" )
+  field( OUTC, "${DEV}:${CAN_LINE}:${MODULE_ID}:2:VoltageBounds.VAL PP" )
+  field( OUTD, "${DEV}:${CAN_LINE}:${MODULE_ID}:3:VoltageBounds.VAL PP" )
+  field( OUTE, "${DEV}:${CAN_LINE}:${MODULE_ID}:4:VoltageBounds.VAL PP" )
+  field( OUTF, "${DEV}:${CAN_LINE}:${MODULE_ID}:5:VoltageBounds.VAL PP" )
+  field( OUTG, "${DEV}:${CAN_LINE}:${MODULE_ID}:6:VoltageBounds.VAL PP" )
+  field( OUTH, "${DEV}:${CAN_LINE}:${MODULE_ID}:7:VoltageBounds.VAL PP" )
+}
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetVoltageBounds2")
+{
+  field( SELM, "Mask" )
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:8:VoltageBounds.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:9:VoltageBounds.VAL PP" )
+  field( OUTC, "${DEV}:${CAN_LINE}:${MODULE_ID}:10:VoltageBounds.VAL PP" )
+  field( OUTD, "${DEV}:${CAN_LINE}:${MODULE_ID}:11:VoltageBounds.VAL PP" )
+  field( OUTE, "${DEV}:${CAN_LINE}:${MODULE_ID}:12:VoltageBounds.VAL PP" )
+  field( OUTF, "${DEV}:${CAN_LINE}:${MODULE_ID}:13:VoltageBounds.VAL PP" )
+  field( OUTG, "${DEV}:${CAN_LINE}:${MODULE_ID}:14:VoltageBounds.VAL PP" )
+  field( OUTH, "${DEV}:${CAN_LINE}:${MODULE_ID}:15:VoltageBounds.VAL PP" )
+}
+
+###################################################################################
+#############      Set Group CurrentBounds in Group Behaviour      ################
+###################################################################################
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSetCurrentBounds" ) {
+  field( SELM, "All")
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetCurrentBounds1.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetCurrentBounds2.VAL PP" )
+}
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetCurrentBounds1")
+{
+  field( SELM, "Mask" )
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:0:CurrentBounds.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:1:CurrentBounds.VAL PP" )
+  field( OUTC, "${DEV}:${CAN_LINE}:${MODULE_ID}:2:CurrentBounds.VAL PP" )
+  field( OUTD, "${DEV}:${CAN_LINE}:${MODULE_ID}:3:CurrentBounds.VAL PP" )
+  field( OUTE, "${DEV}:${CAN_LINE}:${MODULE_ID}:4:CurrentBounds.VAL PP" )
+  field( OUTF, "${DEV}:${CAN_LINE}:${MODULE_ID}:5:CurrentBounds.VAL PP" )
+  field( OUTG, "${DEV}:${CAN_LINE}:${MODULE_ID}:6:CurrentBounds.VAL PP" )
+  field( OUTH, "${DEV}:${CAN_LINE}:${MODULE_ID}:7:CurrentBounds.VAL PP" )
+}
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetCurrentBounds2")
+{
+  field( SELM, "Mask" )
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:8:CurrentBounds.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:9:CurrentBounds.VAL PP" )
+  field( OUTC, "${DEV}:${CAN_LINE}:${MODULE_ID}:10:CurrentBounds.VAL PP" )
+  field( OUTD, "${DEV}:${CAN_LINE}:${MODULE_ID}:11:CurrentBounds.VAL PP" )
+  field( OUTE, "${DEV}:${CAN_LINE}:${MODULE_ID}:12:CurrentBounds.VAL PP" )
+  field( OUTF, "${DEV}:${CAN_LINE}:${MODULE_ID}:13:CurrentBounds.VAL PP" )
+  field( OUTG, "${DEV}:${CAN_LINE}:${MODULE_ID}:14:CurrentBounds.VAL PP" )
+  field( OUTH, "${DEV}:${CAN_LINE}:${MODULE_ID}:15:CurrentBounds.VAL PP" )
+}
+
+
+###################################################################################
+################      Set Group setEmergancy in Group Behaviour      ##############
+###################################################################################
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSetEmergancy" ) {
+  field( SELM, "All")
+  field( EGU, "A")
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetEmergancy1.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetEmergancy2.VAL PP" )
+}
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetEmergancy1")
+{
+  field( SELM, "Mask" )
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:0:Control:setEmergancy.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:1:Control:setEmergancy.VAL PP" )
+  field( OUTC, "${DEV}:${CAN_LINE}:${MODULE_ID}:2:Control:setEmergancy.VAL PP" )
+  field( OUTD, "${DEV}:${CAN_LINE}:${MODULE_ID}:3:Control:setEmergancy.VAL PP" )
+  field( OUTE, "${DEV}:${CAN_LINE}:${MODULE_ID}:4:Control:setEmergancy.VAL PP" )
+  field( OUTF, "${DEV}:${CAN_LINE}:${MODULE_ID}:5:Control:setEmergancy.VAL PP" )
+  field( OUTG, "${DEV}:${CAN_LINE}:${MODULE_ID}:6:Control:setEmergancy.VAL PP" )
+  field( OUTH, "${DEV}:${CAN_LINE}:${MODULE_ID}:7:Control:setEmergancy.VAL PP" )
+}
+
+record( dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanGroupSetEmergancy2")
+{
+  field( SELM, "Mask" )
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:8:Control:setEmergancy.VAL PP" )
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:9:Control:setEmergancy.VAL PP" )
+  field( OUTC, "${DEV}:${CAN_LINE}:${MODULE_ID}:10:Control:setEmergancy.VAL PP" )
+  field( OUTD, "${DEV}:${CAN_LINE}:${MODULE_ID}:11:Control:setEmergancy.VAL PP" )
+  field( OUTE, "${DEV}:${CAN_LINE}:${MODULE_ID}:12:Control:setEmergancy.VAL PP" )
+  field( OUTF, "${DEV}:${CAN_LINE}:${MODULE_ID}:13:Control:setEmergancy.VAL PP" )
+  field( OUTG, "${DEV}:${CAN_LINE}:${MODULE_ID}:14:Control:setEmergancy.VAL PP" )
+  field( OUTH, "${DEV}:${CAN_LINE}:${MODULE_ID}:15:Control:setEmergancy.VAL PP" )
+}
+
+
+#####################################################################################
+#####################################################################################
+#####################################################################################
+
+
+#####################################################################################
+##############          Group Bahaviuor of every Modul      #########################
+#####################################################################################
+
+record(mbboDirect, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBGroupSelection"){ #Value from CSS
+   field( OUT, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanVarGBGroupSelection.VAL PP")
+}
+
+record(dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:FanVarGBGroupSelection") {    #USE THIS RECORD FOR CSS AS VOLTAGE SET
+  field( SELM, "All" )
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqVoltageSet.DO1 NPP")
+  field( OUTB, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqSwitchOn.DO1 NPP")
+  field( OUTC, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqCurrentSet.DO1 NPP")
+  field( OUTD, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqDelayedTripTimeSet.DO1 NPP")
+  field( OUTE, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqVoltageBoundsSet.DO1 NPP")
+  field( OUTF, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqCurrentBoundsSet.DO1 NPP")
+  field( OUTG, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqEmergancySet.DO1 NPP")
+}
+
+
+###################################################################################
+##############      Set variable Group Behaviour Voltage Set    ###################
+###################################################################################
+
+record(dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBVoltageSet") {    #USE THIS RECORD FOR CSS AS VOLTAGE SET /Propably not necceccary
+  field( SELM, "All" )
+  field( EGU, "V")
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqVoltageSet.DO3 PP")
+}
+
+record(seq, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqVoltageSet") {
+  field( SELM, "All" )
+  field( DO1, "" )                  # Channels to execute (binary)
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection.VAL NPP" )
+  field( DO2, "1" ) # 1 is equal to Voltage
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:StartBehaviour.SELN NPP" )
+  #field( DO3, "")                  # Value of Voltage
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:StartBehaviour.VAL NPP")
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection" )
+}
+
+
+###################################################################################
+##############      Set variable Group Behaviour SwitchOn       ###################
+###################################################################################
+
+record(dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSwitchOn") {        #USE THIS RECORD FOR CSS SWITCH ON/ Propably delete it
+  field( SELM, "All" )
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqSwitchOn.DO3 PP")
+}
+
+
+record(seq, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqSwitchOn") {
+  field( SELM, "All" )
+  #field( DO1, "" )                  # Channels to execute (binary)
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection.VAL NPP" )
+  field( DO2, "2" ) # 2 is equal to SwitchOn
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:StartBehaviour.SELN NPP" )
+  #field( DO3, "")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:StartBehaviour.VAL NPP")
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection" )
+}
+
+
+###################################################################################
+##############      Set variable Group Behaviour Current Set    ###################
+###################################################################################
+
+record(dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBCurrentSet") {    #USE THIS RECORD FOR CSS AS VOLTAGE SET /Propably not necceccary
+  field( SELM, "All" )
+  field( EGU, "A")
+  field( PREC, "3")
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqCurrentSet.DO3 PP")
+}
+
+record(seq, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqCurrentSet") {
+  field( SELM, "All" )
+  #field( DO1, "" )                  # Channels to execute (binary)
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection.VAL NPP" )
+  field( DO2, "4" ) # 4 is equal to Current
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:StartBehaviour.SELN NPP" )
+  #field( DO3, "")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:StartBehaviour.VAL NPP")
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection" )
+}
+
+
+###################################################################################
+##########      Set variable Group Behaviour DelayedTripTime Set    ###############
+###################################################################################
+
+record(dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBDelayedTripTimeSet") {    #USE THIS RECORD FOR CSS AS VOLTAGE SET /Propably not necceccary
+  field( SELM, "All" )
+  field( EGU, "s")
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqDelayedTripTimeSet.DO3 PP")
+}
+
+record(seq, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqDelayedTripTimeSet") {    #each "block" is one Module
+  field( SELM, "All" )
+  #field( DO1, "" )                  # Channels to execute (binary)
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection.VAL NPP" )
+  field( DO2, "8" ) # 4 is equal to Current
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:StartBehaviour.SELN NPP" )
+  #field( DO3, "")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:StartBehaviour.VAL NPP")
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection" )
+}
+
+
+###################################################################################
+##########      Set variable Group Behaviour VoltageBounds Set    #################
+###################################################################################
+
+record(dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBVoltageBoundsSet") {    #USE THIS RECORD FOR CSS AS VOLTAGE SET /Propably not necceccary
+  field( SELM, "All" )
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqVoltageBoundsSet.DO3 PP")
+}
+
+record(seq, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqVoltageBoundsSet") {    #each "block" is one Module
+  field( SELM, "All" )
+  #field( DO1, "" )                  # Channels to execute (binary)
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection.VAL NPP" )
+  field( DO2, "16" ) # 16 is equal to Emergancy
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:StartBehaviour.SELN NPP" )
+  #field( DO3, "")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:StartBehaviour.VAL NPP")
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection" )
+}
+
+
+###################################################################################
+##########      Set variable Group Behaviour CurrentBounds Set    #################
+###################################################################################
+
+record(dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBCurrentBoundsSet") {    #USE THIS RECORD FOR CSS AS VOLTAGE SET /Propably not necceccary
+  field( SELM, "All" )
+  field( PREC, "3")
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqCurrentBoundsSet.DO3 PP")
+}
+
+record(seq, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqCurrentBoundsSet") {    #each "block" is one Module
+  field( SELM, "All" )
+  #field( DO1, "" )                  # Channels to execute (binary)
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection.VAL NPP" )
+  field( DO2, "32" ) # 32 is equal to Emergancy
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:StartBehaviour.SELN NPP" )
+  #field( DO3, "")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:StartBehaviour.VAL NPP")
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection" )
+}
+
+
+###################################################################################
+##########         Set variable Group Behaviour EmergancySet      #################
+###################################################################################
+
+record(dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBEmergancySet") {    #USE THIS RECORD FOR CSS AS VOLTAGE SET /Propably not necceccary
+  field( SELM, "All" )
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqEmergancySet.DO3 PP")
+}
+
+record(seq, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqEmergancySet") {    #each "block" is one Module
+  field( SELM, "All" )
+  #field( DO1, "" )                  # Channels to execute (binary)
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection.VAL NPP" )
+  field( DO2, "64" ) # 64 is equal to Emergancy
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:StartBehaviour.SELN NPP" )
+  #field( DO3, "")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:StartBehaviour.VAL NPP")
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection" )
+}
+
+
+###################################################################################
+#################          SwicthOn All in one Module             #################
+###################################################################################
+
+record(dfanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSwitchOnAll") {        #USE THIS RECORD FOR CSS SWITCH ON/ Propably delete it
+  field( SELM, "All" )
+  field( OUTA, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqSwitchOnAll.DO3 PP")
+}
+
+
+record(seq, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBSeqSwitchOnAll") {    #each "block" is one Module
+  field( SELM, "All" )
+  field( DO1, "65535" )                  # Channels to execute (binary)
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection.VAL NPP" )
+  field( DO2, "2" ) # 2 is equal to SwitchOn
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:StartBehaviour.SELN NPP" )
+  #field( DO3, "")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:StartBehaviour.VAL NPP")
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:GroupSelection" )
+}
+
+
+###################################################################################
+#################          SwicthOn All in all Modules             ################
+###################################################################################
+
+record(dfanout, "${DEV}:${CAN_LINE}:SwitchOnAll") {
+  field( SELM, "All" )
+  field( OUTA, "${DEV}:${CAN_LINE}:0:VarGBSeqSwitchOnAll.DO3 PP")
+}
+
+#####################################################################################
+#####################################################################################
+#####################################################################################
+
+
+###############################
+# ### Channel item values ### #
+###############################
+
+record( ao, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:VoltageSet" ) {
+  field( DTYP, "isegHAL" )
+  field( OUT,  "@${CAN_LINE}.${MODULE_ID}.${CHANNEL_ID}.VoltageSet can0" )
+  field( EGU, "V")
+  field( TSE,  "-2" )
+}
+
+record( calcout, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Power" ) {
+  field( SCAN, "1 second")
+  field( INPA, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:VoltageMeasure" )
+  field( INPB, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:CurrentMeasure" )
+  field( CALC, "A*B")
+}
+
+record( ao, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:CurrentSet" ) {
+  field( DTYP, "isegHAL" )
+  field( PREC, "3")
+  field( OUT,  "@${CAN_LINE}.${MODULE_ID}.${CHANNEL_ID}.CurrentSet can0" )
+  field( EGU, "A")
+  field( TSE,  "-2" )
+}
+
+record( ai, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:VoltageMeasure" ) {
+  field( SCAN, "1 second")
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${MODULE_ID}.${CHANNEL_ID}.VoltageMeasure can0" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:CurrentMeasure" )
+  field( TSE,  "-2" )
+}
+
+record( ai, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:CurrentMeasure" ) {
+  field( SCAN, "1 second")
+  field( DTYP, "isegHAL" )
+  field( PREC, "3")
+  field( INP,  "@${CAN_LINE}.${MODULE_ID}.${CHANNEL_ID}.CurrentMeasure can0" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Status" )
+  field( TSE,  "-2" )
+}
+
+record( ao, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:VoltageBounds" ) {
+  field( DTYP, "isegHAL" )
+  field( OUT,  "@${CAN_LINE}.${MODULE_ID}.${CHANNEL_ID}.VoltageBounds can0" )
+  field( TSE,  "-2" )
+}
+
+record( ao, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:CurrentBounds" ) {
+  field( DTYP, "isegHAL" )
+  field( PREC, "3")
+  field( OUT,  "@${CAN_LINE}.${MODULE_ID}.${CHANNEL_ID}.CurrentBounds can0" )
+  field( TSE,  "-2" )
+}
+
+record( ai, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:VoltageNominal" ) {
+  field( SCAN, "1 second")
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${MODULE_ID}.${CHANNEL_ID}.VoltageNominal can0" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:CurrentNominal" )
+  field( TSE,  "-2" )
+}
+
+record( ai, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:CurrentNominal" ) {
+  field( SCAN, "1 second")
+  field( DTYP, "isegHAL" )
+  field( PREC, "4")
+  field( INP,  "@${CAN_LINE}.${MODULE_ID}.${CHANNEL_ID}.CurrentNominal can0" )
+  field( TSE,  "-2" )
+}
+
+record( ai, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:TemperatureExternal" ) {
+  field( SCAN, "1 second")
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${MODULE_ID}.${CHANNEL_ID}.TemperatureExternal can0" )
+  field( TSE,  "-2" )
+}
+
+record( ao, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:VctParameter" ) {
+  field( DTYP, "isegHAL" )
+  field( OUT,  "@${CAN_LINE}.${MODULE_ID}.${CHANNEL_ID}.VctParameter can0" )
+  field( TSE,  "-2" )
+}
+
+record( mbbiDirect, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Status" ) {
+  field( DTYP, "isegHAL" )
+  field( SCAN, "1 second")
+  field( INP,  "@${CAN_LINE}.${MODULE_ID}.${CHANNEL_ID}.Status can0" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventStatus" )
+  field( TSE,  "-2" )
+}
+
+record( bo, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Control:setOn" ) {
+  field( DTYP, "isegHAL" )
+  field( OUT,  "@${CAN_LINE}.${MODULE_ID}.${CHANNEL_ID}.Control:3 can0" )
+  field( ZNAM, "Channel off" )
+  field( ONAM, "Channel on" )
+  field( TSE,  "-2" )
+}
+
+record( bo, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Control:setEmergancy" ) {
+  field( DTYP, "isegHAL" )
+  field( OUT,  "@${CAN_LINE}.${MODULE_ID}.${CHANNEL_ID}.Control:5 can0" )
+  field( ZNAM, "" )
+  field( ONAM, "Set EMCY" )
+  field( TSE,  "-2" )
+}
+
+record( mbbiDirect, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventStatus" ) {
+  field( DTYP, "isegHAL" )
+  field( INP,  "@${CAN_LINE}.${MODULE_ID}.${CHANNEL_ID}.EventStatus can0" )
+  field( TSE,  "-2" )
+}
+
+record( longout, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventMask" ) {
+  field( DTYP, "isegHAL" )
+  field( OUT,  "@${CAN_LINE}.${MODULE_ID}.${CHANNEL_ID}.EventMask can0" )
+  field( TSE,  "-2" )
+}
+
+record( longout, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:DelayedTripAction" ) {
+  field( DTYP, "isegHAL" )
+  field( OUT,  "@${CAN_LINE}.${MODULE_ID}.${CHANNEL_ID}.DelayedTripAction can0" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:DelayedTripTime" )
+  field( TSE,  "-2" )
+}
+
+record( ao, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:DelayedTripTime" ) {
+  field( DTYP, "isegHAL" )
+  field( OUT,  "@${CAN_LINE}.${MODULE_ID}.${CHANNEL_ID}.DelayedTripTime can0" )
+  field( TSE,  "-2" )
+}
+
+record( longout, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:ExternalInhibitAction" ) {
+  field( DTYP, "isegHAL" )
+  field( OUT,  "@${CAN_LINE}.${MODULE_ID}.${CHANNEL_ID}.ExternalInhibitAction can0" )
+  field( TSE,  "-2" )
+}
+
+######################################
+# ### Decoding of Channel Status ### #
+######################################
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:InputError" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Status.B2 CP can0" )
+  field( ZNAM, "OK" )
+  field( ONAM, "Input Error" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MINOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:isOn" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Status.B3 CP can0" )
+  field( ZNAM, "off" )
+  field( ONAM, "on" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "NO_ALARM" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:isVoltageRamp" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Status.B4 CP can0" )
+  field( ZNAM, "stable" )
+  field( ONAM, "ramping" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "NO_ALARM" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:isEmergancy" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Status.B5 CP can0" )
+  field( ZNAM, "-" )
+  field( ONAM, "active" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:isCC" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Status.B6 CP can0" )
+  field( ZNAM, "-" )
+  field( ONAM, "active" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:isCV" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Status.B7 CP can0" )
+  field( ZNAM, "-" )
+  field( ONAM, "active" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "NO_ALARM" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:isCurrentBound" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Status.BA CP can0" )
+  field( ZNAM, "OK" )
+  field( ONAM, "Out of bounds" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:isVoltageBound" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Status.BB CP can0" )
+  field( ZNAM, "OK" )
+  field( ONAM, "Out of bounds" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:isEventInhibit" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Status.BC CP can0" )
+  field( ZNAM, "no" )
+  field( ONAM, "yes" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:isTrip" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Status.BD CP can0" )
+  field( ZNAM, "OK" )
+  field( ONAM, "tripped" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "NO_ALARM" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:isCurrentLimit" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Status.BE CP can0" )
+  field( ZNAM, "OK" )
+  field( ONAM, "exceeded" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:isVoltageLimit" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Status.BF CP can0" )
+  field( ZNAM, "OK" )
+  field( ONAM, "exceeded" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+############################################
+# ### Decoding of Channel Event Status ### #
+############################################
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventInputError" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventStatus.B2 CP can0" )
+  field( ZNAM, "--" )
+  field( ONAM, "active" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MINOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EOn2Off" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventStatus.B3 CP can0" )
+  field( ZNAM, "--" )
+  field( ONAM, "active" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventEndOfRamp" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventStatus.B4 CP can0" )
+  field( ZNAM, "--" )
+  field( ONAM, "active" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "NO_ALARM" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventEmergancy" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventStatus.B5 CP can0" )
+  field( ZNAM, "--" )
+  field( ONAM, "active" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "NO_ALARM" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:ECC" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventStatus.B6 CP can0" )
+  field( ZNAM, "--" )
+  field( ONAM, "active" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:ECV" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventStatus.B7 CP can0" )
+  field( ZNAM, "--" )
+  field( ONAM, "active" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "NO_ALARM" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:ECurrentBounds" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventStatus.BA CP can0" )
+  field( ZNAM, "--" )
+  field( ONAM, "active" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EVVoltageBounds" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventStatus.BB CP can0" )
+  field( ZNAM, "--" )
+  field( ONAM, "active" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventExternalInhibit" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventStatus.BC CP can0" )
+  field( ZNAM, "--" )
+  field( ONAM, "active" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventTrip" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventStatus.BD CP can0" )
+  field( ZNAM, "--" )
+  field( ONAM, "active" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventCurrentLimit" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventStatus.BE CP can0" )
+  field( ZNAM, "--" )
+  field( ONAM, "active" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventVoltageLimit" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:EventStatus.BF CP can0" )
+  field( ZNAM, "--" )
+  field( ONAM, "active" )
+  field( ZSV,  "NO_ALARM" )
+  field( OSV,  "MAJOR" )
+}
+
+
+############################################################################################
+############################################################################################
+############################################################################################
+
+
+
+###############################################################################
+################ All Saving fields of a Module and VarGB ######################
+###############################################################################
+
+record( ai, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Save:VoltageSet" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:VoltageSet.VAL" )
+}
+
+record( ai, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Save:CurrentSet" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:CurrentSet.VAL" )
+}
+
+record( ai, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Save:VoltageBounds" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:VoltageBounds.VAL" )
+}
+
+record( ai, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Save:CurrentBounds" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:CurrentBounds.VAL" )
+}
+
+record( ai, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Save:DelayedTripTime" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:DelayedTripTime.VAL" )
+}
+
+#record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Control:Save:setEmergancy" ) {
+#  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Control:setEmergancy" )
+#  #field( ZNAM, "" )
+#  #field( ONAM, "Set EMCY" )
+#}
+
+##########################################################################################
+
+
+record( ai, "${DEV}:${CAN_LINE}:${MODULE_ID}:Save:VarGBVoltageSet" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBVoltageSet.VAL" )
+}
+
+record( ai, "${DEV}:${CAN_LINE}:${MODULE_ID}:Save:VarGBCurrentSet" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBCurrentSet.VAL" )
+}
+
+record( ai, "${DEV}:${CAN_LINE}:${MODULE_ID}:Save:VarGBVoltageBoundsSet" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBVoltageSet.VAL" )
+}
+
+record( ai, "${DEV}:${CAN_LINE}:${MODULE_ID}:Save:VarGBCurrentBoundsSet" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBCurrentSet.VAL" )
+}
+
+record( ai, "${DEV}:${CAN_LINE}:${MODULE_ID}:Save:VarGBDelayedTripTimeSet" ) {
+  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBDelayedTripTimeSet.VAL" )
+}
+
+#record( bi, "${DEV}:${CAN_LINE}:${MODULE_ID}:Save:VarGBEmergancySet" ) {
+#  field( INP,  "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBEmergancySet" )
+#}
+
+###############################################################################
+################ All Load fields of a Module and VarGB ########################
+###############################################################################
+
+record( ao, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Load:VoltageSet" ) {
+  field( OMSL, "closed_loop")
+  field( DOL, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Save:VoltageSet.VAL")
+  field( OUT,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:VoltageSet.VAL PP" )
+}
+
+record( ao, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Load:CurrentSet" ) {
+  field( OMSL, "closed_loop")
+  field( DOL, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Save:CurrentSet.VAL")
+  field( OUT,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:CurrentSet.VAL PP" )
+}
+
+record( ao, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Load:VoltageBounds" ) {
+  field( OMSL, "closed_loop")
+  field( DOL, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Save:VoltageBounds.VAL")
+  field( OUT,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:VoltageBounds.VAL PP" )
+}
+
+record( ao, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Load:CurrentBounds" ) {
+  field( OMSL, "closed_loop")
+  field( DOL, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Save:CurrentBounds.VAL")
+  field( OUT,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:CurrentBounds.VAL PP" )
+}
+
+record( ao, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Load:DelayedTripTime" ) {
+  field( OMSL, "closed_loop")
+  field( DOL, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Save:DelayedTripTime.VAL")
+  field( OUT,  "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:DelayedTripTime.VAL PP" )
+}
+
+#record( ao, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Control:Load:setEmergancy" ) {
+#  field( OMSL, "closed_loop")
+#  field( DOL, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Control:Save:setEmergancy.VAL")
+#  field( OUT, "${DEV}:${CAN_LINE}:${MODULE_ID}:${CHANNEL_ID}:Control:setEmergancy.VAL PP" )
+#}
+
+#####################################################################################
+## NOT IN USE: THEY WOULD OVERWRITE THE NORMAL SINGLE CHANNEL SETTINGS ####
+
+
+#record( ao, "${DEV}:${CAN_LINE}:${MODULE_ID}:Load:VarGBVoltageSet" ) {
+#  field( OMSL, "closed_loop")
+#  field( DOL, "${DEV}:${CAN_LINE}:${MODULE_ID}:Save:VarGBVoltageSet.VAL")
+#  field( OUT, "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBVoltageSet.VAL NPP" )
+#}
+
+#record( ao, "${DEV}:${CAN_LINE}:${MODULE_ID}:Load:VarGBCurrentSet" ) {
+#  field( OMSL, "closed_loop")
+#  field( DOL, "${DEV}:${CAN_LINE}:${MODULE_ID}:Save:VarGBCurrentSet.VAL")
+#  field( OUT,  "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBCurrentSet.VAL NPP" )
+#}
+
+#record( ao, "${DEV}:${CAN_LINE}:${MODULE_ID}:Load:VarGBVoltageBoundsSet" ) {
+#  field( OMSL, "closed_loop")
+#  field( DOL, "${DEV}:${CAN_LINE}:${MODULE_ID}:Save:VarGBVoltageBoundsSet.VAL")
+#  field( OUT,  "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBVoltageSet.VAL NPP" )
+#}
+
+#record( ao, "${DEV}:${CAN_LINE}:${MODULE_ID}:Load:VarGBCurrentBoundsSet" ) {
+#  field( OMSL, "closed_loop")
+#  field( DOL, "${DEV}:${CAN_LINE}:${MODULE_ID}:Save:VarGBCurrentBoundsSet.VAL")
+#  field( OUT,  "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBCurrentSet.VAL NPP" )
+#}
+
+#record( ao, "${DEV}:${CAN_LINE}:${MODULE_ID}:Load:VarGBDelayedTripTimeSet" ) {
+#  field( OMSL, "closed_loop")
+#  field( DOL, "${DEV}:${CAN_LINE}:${MODULE_ID}:Save:VarGBDelayedTripTimeSet.VAL")
+#  field( OUT,  "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBDelayedTripTimeSet.VAL NPP" )
+#}
+
+#record( ao, "${DEV}:${CAN_LINE}:${MODULE_ID}:Load:VarGBEmergancySet" ) {
+#  field( OMSL, "closed_loop")
+#  field( DOL, "${DEV}:${CAN_LINE}:${MODULE_ID}:Save:VarGBEmergancySet.VAL")
+#  field( OUT,  "${DEV}:${CAN_LINE}:${MODULE_ID}:VarGBEmergancySet.VAL NPP" )
+#}
+
+
+###############################################################################
+################ Process all Saving fields of a Module ########################
+###############################################################################
+
+record( fanout, "${DEV}:${CAN_LINE}:SaveAll") {
+  field( LNK1, "${DEV}:${CAN_LINE}:0:SaveAll.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:1:SaveAll.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:2:SaveAll.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:3:SaveAll.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:4:SaveAll.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:SaveAll2")
+}
+
+record( fanout, "${DEV}:${CAN_LINE}:SaveAll2") {
+  field( LNK1, "${DEV}:${CAN_LINE}:5:SaveAll.PROC")		##Add more LNK field if more than 6 modules are plugged in
+  field( LNK2, "${DEV}:${CAN_LINE}:Grouping:SaveAll")
+}
+
+record( fanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:SaveAll") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:SaveVoltageSet.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:SaveCurrentSet.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:SaveVoltageBounds.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:SaveCurrentBounds.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:SaveDelayedTripTime.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:SaveAll2")
+}
+
+record( fanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:SaveAll2") {
+#  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:SavesetEmergancy.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:Save:VarGBVoltageSet.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:Save:VarGBCurrentSet.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:Save:VarGBVoltageBoundsSet.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:Save:VarGBCurrentBoundsSet.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:SaveAll3")
+}
+
+record( fanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:SaveAll3") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:Save:VarGBDelayedTripTimeSet.PROC")
+# field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:Save:VarGBEmergancySet.PROC")
+}
+
+
+###########################################################################
+######### Process all Saves for Voltage Set in one Module #################
+###########################################################################
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:SaveVoltageSet") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:0:Save:VoltageSet.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:1:Save:VoltageSet.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:2:Save:VoltageSet.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:3:Save:VoltageSet.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:4:Save:VoltageSet.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:SaveVoltageSet2")
+}
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:SaveVoltageSet2") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:5:Save:VoltageSet.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:6:Save:VoltageSet.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:7:Save:VoltageSet.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:8:Save:VoltageSet.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:9:Save:VoltageSet.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:SaveVoltageSet3")
+}
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:SaveVoltageSet3") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:10:Save:VoltageSet.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:11:Save:VoltageSet.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:12:Save:VoltageSet.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:13:Save:VoltageSet.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:14:Save:VoltageSet.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:15:Save:VoltageSet.PROC")
+}
+
+#########################################################################
+####### Process all Saves for Current Set in one Module #################
+#########################################################################
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:SaveCurrentSet") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:0:Save:CurrentSet.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:1:Save:CurrentSet.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:2:Save:CurrentSet.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:3:Save:CurrentSet.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:4:Save:CurrentSet.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:SaveCurrentSet2")
+}
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:SaveCurrentSet2") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:5:Save:CurrentSet.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:6:Save:CurrentSet.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:7:Save:CurrentSet.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:8:Save:CurrentSet.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:9:Save:CurrentSet.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:SaveCurrentSet3")
+}
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:SaveCurrentSet3") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:10:Save:CurrentSet.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:11:Save:CurrentSet.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:12:Save:CurrentSet.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:13:Save:CurrentSet.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:14:Save:CurrentSet.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:15:Save:CurrentSet.PROC")
+}
+
+###########################################################################
+####### Process all Saves for VoltageBounds in one Module #################
+###########################################################################
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:SaveVoltageBounds") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:0:Save:VoltageBounds.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:1:Save:VoltageBounds.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:2:Save:VoltageBounds.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:3:Save:VoltageBounds.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:4:Save:VoltageBounds.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:SaveVoltageBounds2")
+}
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:SaveVoltageBounds2") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:5:Save:VoltageBounds.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:6:Save:VoltageBounds.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:7:Save:VoltageBounds.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:8:Save:VoltageBounds.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:9:Save:VoltageBounds.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:SaveVoltageBounds3")
+}
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:SaveVoltageBounds3") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:10:Save:VoltageBounds.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:11:Save:VoltageBounds.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:12:Save:VoltageBounds.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:13:Save:VoltageBounds.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:14:Save:VoltageBounds.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:15:Save:VoltageBounds.PROC")
+}
+
+###########################################################################
+####### Process all Saves for CurrentBounds in one Module #################
+###########################################################################
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:SaveCurrentBounds") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:0:Save:CurrentBounds.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:1:Save:CurrentBounds.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:2:Save:CurrentBounds.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:3:Save:CurrentBounds.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:4:Save:CurrentBounds.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:SaveCurrentBounds2")
+}
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:SaveCurrentBounds2") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:5:Save:CurrentBounds.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:6:Save:CurrentBounds.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:7:Save:CurrentBounds.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:8:Save:CurrentBounds.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:9:Save:CurrentBounds.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:SaveCurrentBounds3")
+}
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:SaveCurrentBounds3") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:10:Save:CurrentBounds.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:11:Save:CurrentBounds.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:12:Save:CurrentBounds.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:13:Save:CurrentBounds.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:14:Save:CurrentBounds.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:15:Save:CurrentBounds.PROC")
+}
+
+#############################################################################
+####### Process all Saves for DelayedTripTime in one Module #################
+#############################################################################
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:SaveDelayedTripTime") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:0:Save:DelayedTripTime.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:1:Save:DelayedTripTime.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:2:Save:DelayedTripTime.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:3:Save:DelayedTripTime.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:4:Save:DelayedTripTime.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:SaveDelayedTripTime2")
+}
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:SaveDelayedTripTime2") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:5:Save:DelayedTripTime.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:6:Save:DelayedTripTime.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:7:Save:DelayedTripTime.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:8:Save:DelayedTripTime.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:9:Save:DelayedTripTime.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:SaveDelayedTripTime3")
+}
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:SaveDelayedTripTime3") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:10:Save:DelayedTripTime.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:11:Save:DelayedTripTime.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:12:Save:DelayedTripTime.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:13:Save:DelayedTripTime.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:14:Save:DelayedTripTime.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:15:Save:DelayedTripTime.PROC")
+}
+
+###########################################################################
+########## Process all Saves for SetEmergancy in one Module ###############
+###########################################################################
+
+#record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:SavesetEmergancy") {
+#  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:0:Save:setEmergancy.PROC")
+#  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:1:Save:setEmergancy.PROC")
+#  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:2:Save:setEmergancy.PROC")
+#  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:3:Save:setEmergancy.PROC")
+#  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:4:Save:setEmergancy.PROC")
+#  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:SavesetEmergancy2")
+#}
+
+#record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:SavesetEmergancy2") {
+#  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:5:Save:setEmergancy.PROC")
+#  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:6:Save:setEmergancy.PROC")
+#  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:7:Save:setEmergancy.PROC")
+#  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:8:Save:setEmergancy.PROC")
+#  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:9:Save:setEmergancy.PROC")
+#  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:SavesetEmergancy3")
+#}
+
+#record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:SavesetEmergancy3") {
+#  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:10:Save:setEmergancy.PROC")
+#  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:11:Save:setEmergancy.PROC")
+#  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:12:Save:setEmergancy.PROC")
+#  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:13:Save:setEmergancy.PROC")
+#  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:14:Save:setEmergancy.PROC")
+#  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:15:Save:setEmergancy.PROC")
+#}
+
+
+###############################################################################
+###############################################################################
+
+###############################################################################
+################ Process all Loading fields of a Module #######################
+###############################################################################
+
+record( fanout, "${DEV}:${CAN_LINE}:LoadAll") {
+  field( LNK1, "${DEV}:${CAN_LINE}:0:LoadAll.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:1:LoadAll.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:2:LoadAll.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:3:LoadAll.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:4:LoadAll.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:LoadAll2")
+}
+
+record( fanout, "${DEV}:${CAN_LINE}:LoadAll2") {
+  field( LNK1, "${DEV}:${CAN_LINE}:5:LoadAll.PROC")      ## Add more LNK field if more than 6 modules are plugged in 
+  #field( LNK2, "${DEV}:${CAN_LINE}:Grouping:LoadAll")
+}
+
+record( fanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadAll") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadVoltageSet.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadCurrentSet.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadVoltageBounds.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadCurrentBounds.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadDelayedTripTime.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadAll2")
+}
+
+record( fanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadAll2") {
+#  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadsetEmergancy.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:Load:VarGBVoltageSet.PROC")
+#  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:Load:VarGBCurrentSet.PROC")
+#  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:Load:VarGBVoltageBoundsSet.PROC")
+#  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:Load:VarGBCurrentBoundsSet.PROC")
+#  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadAll3")
+}
+
+#record( fanout, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadAll3") {
+#  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:Load:VarGBDelayedTripTimeSet.PROC")
+#  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:Load:VarGBEmergancySet.PROC")
+#}
+
+
+###########################################################################
+######### Process all Loads for Voltage Set in one Module #################
+###########################################################################
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:LoadVoltageSet") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:0:Load:VoltageSet.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:1:Load:VoltageSet.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:2:Load:VoltageSet.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:3:Load:VoltageSet.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:4:Load:VoltageSet.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadVoltageSet2")
+}
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:LoadVoltageSet2") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:5:Load:VoltageSet.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:6:Load:VoltageSet.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:7:Load:VoltageSet.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:8:Load:VoltageSet.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:9:Load:VoltageSet.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadVoltageSet3")
+}
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:LoadVoltageSet3") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:10:Load:VoltageSet.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:11:Load:VoltageSet.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:12:Load:VoltageSet.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:13:Load:VoltageSet.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:14:Load:VoltageSet.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:15:Load:VoltageSet.PROC")
+}
+
+
+###########################################################################
+######### Process all Loads for Current Set in one Module #################
+###########################################################################
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:LoadCurrentSet") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:0:Load:CurrentSet.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:1:Load:CurrentSet.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:2:Load:CurrentSet.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:3:Load:CurrentSet.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:4:Load:CurrentSet.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadCurrentSet2")
+}
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:LoadCurrentSet2") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:5:Load:CurrentSet.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:6:Load:CurrentSet.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:7:Load:CurrentSet.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:8:Load:CurrentSet.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:9:Load:CurrentSet.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadCurrentSet3")
+}
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:LoadCurrentSet3") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:10:Load:CurrentSet.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:11:Load:CurrentSet.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:12:Load:CurrentSet.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:13:Load:CurrentSet.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:14:Load:CurrentSet.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:15:Load:CurrentSet.PROC")
+}
+
+
+###########################################################################
+######### Process all Loads for VoltageBounds in one Module ###############
+###########################################################################
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:LoadVoltageBounds") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:0:Load:VoltageBounds.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:1:Load:VoltageBounds.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:2:Load:VoltageBounds.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:3:Load:VoltageBounds.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:4:Load:VoltageBounds.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadVoltageBounds2")
+}
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:LoadVoltageBounds2") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:5:Load:VoltageBounds.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:6:Load:VoltageBounds.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:7:Load:VoltageBounds.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:8:Load:VoltageBounds.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:9:Load:VoltageBounds.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadVoltageBounds3")
+}
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:LoadVoltageBounds3") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:10:Load:VoltageBounds.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:11:Load:VoltageBounds.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:12:Load:VoltageBounds.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:13:Load:VoltageBounds.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:14:Load:VoltageBounds.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:15:Load:VoltageBounds.PROC")
+}
+
+###########################################################################
+######### Process all Loads for CurrentBounds in one Module ###############
+###########################################################################
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:LoadCurrentBounds") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:0:Load:CurrentBounds.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:1:Load:CurrentBounds.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:2:Load:CurrentBounds.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:3:Load:CurrentBounds.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:4:Load:CurrentBounds.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadCurrentBounds2")
+}
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:LoadCurrentBounds2") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:5:Load:CurrentBounds.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:6:Load:CurrentBounds.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:7:Load:CurrentBounds.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:8:Load:CurrentBounds.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:9:Load:CurrentBounds.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadCurrentBounds3")
+}
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:LoadCurrentBounds3") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:10:Load:CurrentBounds.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:11:Load:CurrentBounds.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:12:Load:CurrentBounds.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:13:Load:CurrentBounds.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:14:Load:CurrentBounds.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:15:Load:CurrentBounds.PROC")
+}
+
+
+###########################################################################
+######### Process all Loads for DelayedTripTime in one Module #############
+###########################################################################
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:LoadDelayedTripTime") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:0:Load:DelayedTripTime.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:1:Load:DelayedTripTime.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:2:Load:DelayedTripTime.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:3:Load:DelayedTripTime.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:4:Load:DelayedTripTime.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadDelayedTripTime2")
+}
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:LoadDelayedTripTime2") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:5:Load:DelayedTripTime.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:6:Load:DelayedTripTime.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:7:Load:DelayedTripTime.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:8:Load:DelayedTripTime.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:9:Load:DelayedTripTime.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadDelayedTripTime3")
+}
+
+record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:LoadDelayedTripTime3") {
+  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:10:Load:DelayedTripTime.PROC")
+  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:11:Load:DelayedTripTime.PROC")
+  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:12:Load:DelayedTripTime.PROC")
+  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:13:Load:DelayedTripTime.PROC")
+  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:14:Load:DelayedTripTime.PROC")
+  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:15:Load:DelayedTripTime.PROC")
+}
+
+
+###########################################################################
+########### Process all Loads for setEmergancy in one Module ##############
+###########################################################################
+
+#record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:LoadsetEmergancy") {
+#  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:0:Load:setEmergancy.PROC")
+#  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:1:Load:setEmergancy.PROC")
+#  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:2:Load:setEmergancy.PROC")
+#  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:3:Load:setEmergancy.PROC")
+#  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:4:Load:setEmergancy.PROC")
+#  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadsetEmergancy2")
+#}
+
+#record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:LoadsetEmergancy2") {
+#  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:5:Load:setEmergancy.PROC")
+#  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:6:Load:setEmergancy.PROC")
+#  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:7:Load:setEmergancy.PROC")
+#  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:8:Load:setEmergancy.PROC")
+#  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:9:Load:setEmergancy.PROC")
+#  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:LoadsetEmergancy3")
+#}
+
+#record( fanout,"${DEV}:${CAN_LINE}:${MODULE_ID}:LoadsetEmergancy3") {
+#  field( LNK1, "${DEV}:${CAN_LINE}:${MODULE_ID}:10:Load:setEmergancy.PROC")
+#  field( LNK2, "${DEV}:${CAN_LINE}:${MODULE_ID}:11:Load:setEmergancy.PROC")
+#  field( LNK3, "${DEV}:${CAN_LINE}:${MODULE_ID}:12:Load:setEmergancy.PROC")
+#  field( LNK4, "${DEV}:${CAN_LINE}:${MODULE_ID}:13:Load:setEmergancy.PROC")
+#  field( LNK5, "${DEV}:${CAN_LINE}:${MODULE_ID}:14:Load:setEmergancy.PROC")
+#  field( LNK6, "${DEV}:${CAN_LINE}:${MODULE_ID}:15:Load:setEmergancy.PROC")
+#}
+
+
+
+
