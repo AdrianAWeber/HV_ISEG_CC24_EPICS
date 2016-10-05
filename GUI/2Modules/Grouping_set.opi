@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<display typeId="org.csstudio.opibuilder.Display" version="1.0.0">
+  <show_close_button>true</show_close_button>
+  <rules />
+  <wuid>-263aa010:1533cac2869:-457d</wuid>
+  <show_grid>true</show_grid>
+  <auto_zoom_to_fit_all>false</auto_zoom_to_fit_all>
+  <scripts />
+  <height>560</height>
+  <macros>
+    <include_parent_macros>true</include_parent_macros>
+  </macros>
+  <boy_version>4.0.103.201507131348</boy_version>
+  <show_edit_range>true</show_edit_range>
+  <widget_type>Display</widget_type>
+  <auto_scale_widgets>
+    <auto_scale_widgets>false</auto_scale_widgets>
+    <min_width>-1</min_width>
+    <min_height>-1</min_height>
+  </auto_scale_widgets>
+  <background_color>
+    <color red="240" green="240" blue="240" />
+  </background_color>
+  <width>1500</width>
+  <x>-1</x>
+  <name></name>
+  <grid_space>6</grid_space>
+  <show_ruler>true</show_ruler>
+  <y>-1</y>
+  <snap_to_geometry>true</snap_to_geometry>
+  <foreground_color>
+    <color red="192" green="192" blue="192" />
+  </foreground_color>
+  <actions hook="false" hook_all="false" />
+  <widget typeId="org.csstudio.opibuilder.widgets.groupingContainer" version="1.0.0">
+    <border_style>0</border_style>
+    <tooltip></tooltip>
+    <rules />
+    <enabled>true</enabled>
+    <wuid>-263aa010:1533cac2869:-1e7b</wuid>
+    <transparent>true</transparent>
+    <lock_children>false</lock_children>
+    <scripts />
+    <height>493</height>
+    <border_width>1</border_width>
+    <scale_options>
+      <width_scalable>true</width_scalable>
+      <height_scalable>true</height_scalable>
+      <keep_wh_ratio>false</keep_wh_ratio>
+    </scale_options>
+    <macros>
+      <include_parent_macros>true</include_parent_macros>
+    </macros>
+    <visible>true</visible>
+    <border_color>
+      <color red="0" green="128" blue="255" />
+    </border_color>
+    <widget_type>Grouping Container</widget_type>
+    <background_color>
+      <color red="240" green="240" blue="240" />
+    </background_color>
+    <width>949</width>
+    <x>-6</x>
+    <name>8</name>
+    <y>-6</y>
+    <foreground_color>
+      <color red="192" green="192" blue="192" />
+    </foreground_color>
+    <actions hook="false" hook_all="false" />
+    <fc>false</fc>
+    <show_scrollbar>true</show_scrollbar>
+    <font>
+      <opifont.name fontName="Ubuntu" height="11" style="0">Default</opifont.name>
+    </font>
+    <widget typeId="org.csstudio.opibuilder.widgets.linkingContainer" version="1.0.0">
+      <opi_file>RICH_Grouping.opi</opi_file>
+      <border_style>0</border_style>
+      <tooltip></tooltip>
+      <rules />
+      <enabled>true</enabled>
+      <wuid>-263aa010:1533cac2869:-4578</wuid>
+      <scripts />
+      <height>33</height>
+      <border_width>1</border_width>
+      <scale_options>
+        <width_scalable>true</width_scalable>
+        <height_scalable>true</height_scalable>
+        <keep_wh_ratio>false</keep_wh_ratio>
+      </scale_options>
+      <macros>
+        <include_parent_macros>true</include_parent_macros>
+        <CHANNEL>$(MODULE)</CHANNEL>
+      </macros>
+      <resize_behaviour>0</resize_behaviour>
+      <visible>true</visible>
+      <group_name>GroupingName</group_name>
+      <border_color>
+        <color red="0" green="128" blue="255" />
+      </border_color>
+      <widget_type>Linking Container</widget_type>
+      <background_color>
+        <color red="240" green="240" blue="240" />
+      </background_color>
+      <width>907</width>
+      <x>30</x>
+      <name>GroupingName</name>
+      <y>12</y>
+      <foreground_color>
+        <color name="Label Background" red="255" green="255" blue="212" />
+      </foreground_color>
+      <actions hook="false" hook_all="false" />
+      <font>
+        <opifont.name fontName="Ubuntu" height="11" style="0">Default</opifont.name>
+      </font>
+    </widget>
+    <widget typeId="org.csstudio.opibuilder.widgets.linkingContainer" version="1.0.0">
+      <opi_file>RICH_Grouping.opi</opi_file>
+      <border_style>0</border_style>
+      <tooltip></tooltip>
+      <rules />
+      <enabled>true</enabled>
+      <wuid>-263aa010:1533cac2869:-452a</wuid>
+      <scripts />
+      <height>33</height>
+      <border_width>1</border_width>
+      <scale_options>
+        <width_scalable>true</width_scalable>
+        <height_scalable>true</height_scalable>
+        <keep_wh_ratio>false</keep_wh_ratio>
+      </scale_options>
+      <macros>
+        <include_parent_macros>true</include_parent_macros>
+        <G>$(GROUPS):$(Gi)</G>
+        <Gi>G1</Gi>
+      </macros>
+      <resize_behaviour>0</resize_behaviour>
+      <visible>true</visible>
+      <group_name>GroupingChannel</group_name>
+      <border_color>
+        <color red="0" green="128" blue="255" />
+      </border_color>
+      <widget_type>Linking Container</widget_type>
+      <background_color>
+        <color red="240" green="240" blue="240" />
+      </background_color>
+      <width>907</width>
+      <x>30</x>
+      <name>0</name>
+      <y>48</y>
+      <foreground_color>
+        <color red="192" green="192" blue="192" />
+      </foreground_color>
+      <actions hook="false" hook_all="false" />
+      <font>
+        <opifont.name fontName="Ubuntu" height="11" style="0">Default</opifont.name>
+      </font>
+    </widget>
+    <widget typeId="org.csstudio.opibuilder.widgets.linkingContainer" version="1.0.0">
+      <opi_file>RICH_Grouping.opi</opi_file>
+      <border_style>0</border_style>
+      <tooltip></tooltip>
+      <rules />
+      <enabled>true</enabled>
+      <wuid>5c384949:154a518c326:-19cc</wuid>
+      <scripts />
+      <height>35</height>
+      <border_width>1</border_width>
+      <scale_options>
+        <width_scalable>true</width_scalable>
+        <height_scalable>true</height_scalable>
+        <keep_wh_ratio>false</keep_wh_ratio>
+      </scale_options>
+      <macros>
+        <include_parent_macros>true</include_parent_macros>
+        <G>$(GROUPS):$(Gi)</G>
+        <Gi>G2</Gi>
+      </macros>
+      <resize_behaviour>0</resize_behaviour>
+      <visible>true</visible>
+      <group_name>GroupingChannel</group_name>
+      <border_color>
+        <color red="0" green="128" blue="255" />
+      </border_color>
+      <widget_type>Linking Container</widget_type>
+      <background_color>
+        <color red="240" green="240" blue="240" />
+      </background_color>
+      <width>907</width>
+      <x>30</x>
+      <name>0_1</name>
+      <y>80</y>
+      <foreground_color>
+        <color red="192" green="192" blue="192" />
+      </foreground_color>
+      <actions hook="false" hook_all="false" />
+      <font>
+        <opifont.name fontName="Ubuntu" height="11" style="0">Default</opifont.name>
+      </font>
+    </widget>
+  </widget>
+</display>

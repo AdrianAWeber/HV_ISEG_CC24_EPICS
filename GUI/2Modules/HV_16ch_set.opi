@@ -1,0 +1,1307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<display typeId="org.csstudio.opibuilder.Display" version="1.0.0">
+  <show_close_button>true</show_close_button>
+  <rules />
+  <wuid>-263aa010:1533cac2869:-457d</wuid>
+  <show_grid>true</show_grid>
+  <auto_zoom_to_fit_all>false</auto_zoom_to_fit_all>
+  <scripts />
+  <height>560</height>
+  <macros>
+    <include_parent_macros>true</include_parent_macros>
+  </macros>
+  <boy_version>4.0.103.201507131348</boy_version>
+  <show_edit_range>true</show_edit_range>
+  <widget_type>Display</widget_type>
+  <auto_scale_widgets>
+    <auto_scale_widgets>false</auto_scale_widgets>
+    <min_width>-1</min_width>
+    <min_height>-1</min_height>
+  </auto_scale_widgets>
+  <background_color>
+    <color red="240" green="240" blue="240" />
+  </background_color>
+  <width>1500</width>
+  <x>-1</x>
+  <name></name>
+  <grid_space>6</grid_space>
+  <show_ruler>true</show_ruler>
+  <y>-1</y>
+  <snap_to_geometry>true</snap_to_geometry>
+  <foreground_color>
+    <color red="192" green="192" blue="192" />
+  </foreground_color>
+  <actions hook="false" hook_all="false" />
+  <widget typeId="org.csstudio.opibuilder.widgets.groupingContainer" version="1.0.0">
+    <border_style>0</border_style>
+    <tooltip></tooltip>
+    <rules />
+    <enabled>true</enabled>
+    <wuid>-263aa010:1533cac2869:-1e7b</wuid>
+    <transparent>true</transparent>
+    <lock_children>false</lock_children>
+    <scripts />
+    <height>493</height>
+    <border_width>1</border_width>
+    <scale_options>
+      <width_scalable>true</width_scalable>
+      <height_scalable>true</height_scalable>
+      <keep_wh_ratio>false</keep_wh_ratio>
+    </scale_options>
+    <macros>
+      <include_parent_macros>true</include_parent_macros>
+    </macros>
+    <visible>true</visible>
+    <border_color>
+      <color red="0" green="128" blue="255" />
+    </border_color>
+    <widget_type>Grouping Container</widget_type>
+    <background_color>
+      <color red="240" green="240" blue="240" />
+    </background_color>
+    <width>1171</width>
+    <x>6</x>
+    <name>8</name>
+    <y>12</y>
+    <foreground_color>
+      <color red="192" green="192" blue="192" />
+    </foreground_color>
+    <actions hook="false" hook_all="false" />
+    <fc>false</fc>
+    <show_scrollbar>true</show_scrollbar>
+    <font>
+      <opifont.name fontName="Ubuntu" height="11" style="0">Default</opifont.name>
+    </font>
+    <widget typeId="org.csstudio.opibuilder.widgets.linkingContainer" version="1.0.0">
+      <opi_file>HV_Channel.opi</opi_file>
+      <border_style>0</border_style>
+      <tooltip></tooltip>
+      <rules />
+      <enabled>true</enabled>
+      <wuid>-263aa010:1533cac2869:-4578</wuid>
+      <scripts />
+      <height>32</height>
+      <border_width>1</border_width>
+      <scale_options>
+        <width_scalable>true</width_scalable>
+        <height_scalable>true</height_scalable>
+        <keep_wh_ratio>false</keep_wh_ratio>
+      </scale_options>
+      <macros>
+        <include_parent_macros>true</include_parent_macros>
+        <CHANNEL>$(MODULE)</CHANNEL>
+      </macros>
+      <resize_behaviour>0</resize_behaviour>
+      <visible>true</visible>
+      <group_name>Header</group_name>
+      <border_color>
+        <color red="0" green="128" blue="255" />
+      </border_color>
+      <widget_type>Linking Container</widget_type>
+      <background_color>
+        <color red="240" green="240" blue="240" />
+      </background_color>
+      <width>1159</width>
+      <x>0</x>
+      <name>Header</name>
+      <y>0</y>
+      <foreground_color>
+        <color name="Label Background" red="255" green="255" blue="212" />
+      </foreground_color>
+      <actions hook="false" hook_all="false" />
+      <font>
+        <opifont.name fontName="Ubuntu" height="11" style="0">Default</opifont.name>
+      </font>
+    </widget>
+    <widget typeId="org.csstudio.opibuilder.widgets.linkingContainer" version="1.0.0">
+      <opi_file>HV_Channel.opi</opi_file>
+      <border_style>0</border_style>
+      <tooltip></tooltip>
+      <rules />
+      <enabled>true</enabled>
+      <wuid>-263aa010:1533cac2869:-452a</wuid>
+      <scripts />
+      <height>32</height>
+      <border_width>1</border_width>
+      <scale_options>
+        <width_scalable>true</width_scalable>
+        <height_scalable>true</height_scalable>
+        <keep_wh_ratio>false</keep_wh_ratio>
+      </scale_options>
+      <macros>
+        <include_parent_macros>true</include_parent_macros>
+        <ch>0</ch>
+        <CHANNEL>$(MODULE):$(ch)</CHANNEL>
+        <Bit>B0</Bit>
+      </macros>
+      <resize_behaviour>0</resize_behaviour>
+      <visible>true</visible>
+      <group_name>Channel</group_name>
+      <border_color>
+        <color red="0" green="128" blue="255" />
+      </border_color>
+      <widget_type>Linking Container</widget_type>
+      <background_color>
+        <color red="240" green="240" blue="240" />
+      </background_color>
+      <width>1159</width>
+      <x>0</x>
+      <name>0</name>
+      <y>31</y>
+      <foreground_color>
+        <color red="192" green="192" blue="192" />
+      </foreground_color>
+      <actions hook="false" hook_all="false" />
+      <font>
+        <opifont.name fontName="Ubuntu" height="11" style="0">Default</opifont.name>
+      </font>
+    </widget>
+    <widget typeId="org.csstudio.opibuilder.widgets.linkingContainer" version="1.0.0">
+      <opi_file>HV_Channel.opi</opi_file>
+      <border_style>0</border_style>
+      <tooltip></tooltip>
+      <rules />
+      <enabled>true</enabled>
+      <wuid>-263aa010:1533cac2869:-44d6</wuid>
+      <scripts />
+      <height>32</height>
+      <border_width>1</border_width>
+      <scale_options>
+        <width_scalable>true</width_scalable>
+        <height_scalable>true</height_scalable>
+        <keep_wh_ratio>false</keep_wh_ratio>
+      </scale_options>
+      <macros>
+        <include_parent_macros>true</include_parent_macros>
+        <ch>1</ch>
+        <CHANNEL>$(MODULE):$(ch)</CHANNEL>
+        <Bit>B1</Bit>
+      </macros>
+      <resize_behaviour>0</resize_behaviour>
+      <visible>true</visible>
+      <group_name>Channel</group_name>
+      <border_color>
+        <color red="0" green="128" blue="255" />
+      </border_color>
+      <widget_type>Linking Container</widget_type>
+      <background_color>
+        <color red="240" green="240" blue="240" />
+      </background_color>
+      <width>1159</width>
+      <x>0</x>
+      <name>0_1</name>
+      <y>62</y>
+      <foreground_color>
+        <color red="192" green="192" blue="192" />
+      </foreground_color>
+      <actions hook="false" hook_all="false" />
+      <font>
+        <opifont.name fontName="Ubuntu" height="11" style="0">Default</opifont.name>
+      </font>
+    </widget>
+    <widget typeId="org.csstudio.opibuilder.widgets.linkingContainer" version="1.0.0">
+      <opi_file>HV_Channel.opi</opi_file>
+      <border_style>0</border_style>
+      <tooltip></tooltip>
+      <rules />
+      <enabled>true</enabled>
+      <wuid>-263aa010:1533cac2869:-4491</wuid>
+      <scripts />
+      <height>32</height>
+      <border_width>1</border_width>
+      <scale_options>
+        <width_scalable>true</width_scalable>
+        <height_scalable>true</height_scalable>
+        <keep_wh_ratio>false</keep_wh_ratio>
+      </scale_options>
+      <macros>
+        <include_parent_macros>true</include_parent_macros>
+        <ch>2</ch>
+        <CHANNEL>$(MODULE):$(ch)</CHANNEL>
+        <Bit>B2</Bit>
+      </macros>
+      <resize_behaviour>0</resize_behaviour>
+      <visible>true</visible>
+      <group_name>Channel</group_name>
+      <border_color>
+        <color red="0" green="128" blue="255" />
+      </border_color>
+      <widget_type>Linking Container</widget_type>
+      <background_color>
+        <color red="240" green="240" blue="240" />
+      </background_color>
+      <width>1159</width>
+      <x>0</x>
+      <name>0_2</name>
+      <y>93</y>
+      <foreground_color>
+        <color red="192" green="192" blue="192" />
+      </foreground_color>
+      <actions hook="false" hook_all="false" />
+      <font>
+        <opifont.name fontName="Ubuntu" height="11" style="0">Default</opifont.name>
+      </font>
+    </widget>
+    <widget typeId="org.csstudio.opibuilder.widgets.linkingContainer" version="1.0.0">
+      <opi_file>HV_Channel.opi</opi_file>
+      <border_style>0</border_style>
+      <tooltip></tooltip>
+      <rules />
+      <enabled>true</enabled>
+      <wuid>-263aa010:1533cac2869:-444c</wuid>
+      <scripts />
+      <height>32</height>
+      <border_width>1</border_width>
+      <scale_options>
+        <width_scalable>true</width_scalable>
+        <height_scalable>true</height_scalable>
+        <keep_wh_ratio>false</keep_wh_ratio>
+      </scale_options>
+      <macros>
+        <include_parent_macros>true</include_parent_macros>
+        <ch>3</ch>
+        <CHANNEL>$(MODULE):$(ch)</CHANNEL>
+        <Bit>B3</Bit>
+      </macros>
+      <resize_behaviour>0</resize_behaviour>
+      <visible>true</visible>
+      <group_name>Channel</group_name>
+      <border_color>
+        <color red="0" green="128" blue="255" />
+      </border_color>
+      <widget_type>Linking Container</widget_type>
+      <background_color>
+        <color red="240" green="240" blue="240" />
+      </background_color>
+      <width>1159</width>
+      <x>0</x>
+      <name>0_3</name>
+      <y>124</y>
+      <foreground_color>
+        <color red="192" green="192" blue="192" />
+      </foreground_color>
+      <actions hook="false" hook_all="false" />
+      <font>
+        <opifont.name fontName="Ubuntu" height="11" style="0">Default</opifont.name>
+      </font>
+    </widget>
+    <widget typeId="org.csstudio.opibuilder.widgets.linkingContainer" version="1.0.0">
+      <opi_file>HV_Channel.opi</opi_file>
+      <border_style>0</border_style>
+      <tooltip></tooltip>
+      <rules />
+      <enabled>true</enabled>
+      <wuid>-263aa010:1533cac2869:-4407</wuid>
+      <scripts />
+      <height>32</height>
+      <border_width>1</border_width>
+      <scale_options>
+        <width_scalable>true</width_scalable>
+        <height_scalable>true</height_scalable>
+        <keep_wh_ratio>false</keep_wh_ratio>
+      </scale_options>
+      <macros>
+        <include_parent_macros>true</include_parent_macros>
+        <ch>4</ch>
+        <CHANNEL>$(MODULE):$(ch)</CHANNEL>
+        <Bit>B4</Bit>
+      </macros>
+      <resize_behaviour>0</resize_behaviour>
+      <visible>true</visible>
+      <group_name>Channel</group_name>
+      <border_color>
+        <color red="0" green="128" blue="255" />
+      </border_color>
+      <widget_type>Linking Container</widget_type>
+      <background_color>
+        <color red="240" green="240" blue="240" />
+      </background_color>
+      <width>1159</width>
+      <x>0</x>
+      <name>0_4</name>
+      <y>155</y>
+      <foreground_color>
+        <color red="192" green="192" blue="192" />
+      </foreground_color>
+      <actions hook="false" hook_all="false" />
+      <font>
+        <opifont.name fontName="Ubuntu" height="11" style="0">Default</opifont.name>
+      </font>
+    </widget>
+    <widget typeId="org.csstudio.opibuilder.widgets.linkingContainer" version="1.0.0">
+      <opi_file>HV_Channel.opi</opi_file>
+      <border_style>0</border_style>
+      <tooltip></tooltip>
+      <rules />
+      <enabled>true</enabled>
+      <wuid>-263aa010:1533cac2869:-43c2</wuid>
+      <scripts />
+      <height>32</height>
+      <border_width>1</border_width>
+      <scale_options>
+        <width_scalable>true</width_scalable>
+        <height_scalable>true</height_scalable>
+        <keep_wh_ratio>false</keep_wh_ratio>
+      </scale_options>
+      <macros>
+        <include_parent_macros>true</include_parent_macros>
+        <ch>5</ch>
+        <CHANNEL>$(MODULE):$(ch)</CHANNEL>
+        <Bit>B5</Bit>
+      </macros>
+      <resize_behaviour>0</resize_behaviour>
+      <visible>true</visible>
+      <group_name>Channel</group_name>
+      <border_color>
+        <color red="0" green="128" blue="255" />
+      </border_color>
+      <widget_type>Linking Container</widget_type>
+      <background_color>
+        <color red="240" green="240" blue="240" />
+      </background_color>
+      <width>1159</width>
+      <x>0</x>
+      <name>0_5</name>
+      <y>186</y>
+      <foreground_color>
+        <color red="192" green="192" blue="192" />
+      </foreground_color>
+      <actions hook="false" hook_all="false" />
+      <font>
+        <opifont.name fontName="Ubuntu" height="11" style="0">Default</opifont.name>
+      </font>
+    </widget>
+    <widget typeId="org.csstudio.opibuilder.widgets.linkingContainer" version="1.0.0">
+      <opi_file>HV_Channel.opi</opi_file>
+      <border_style>0</border_style>
+      <tooltip></tooltip>
+      <rules />
+      <enabled>true</enabled>
+      <wuid>-263aa010:1533cac2869:-437d</wuid>
+      <scripts />
+      <height>32</height>
+      <border_width>1</border_width>
+      <scale_options>
+        <width_scalable>true</width_scalable>
+        <height_scalable>true</height_scalable>
+        <keep_wh_ratio>false</keep_wh_ratio>
+      </scale_options>
+      <macros>
+        <include_parent_macros>true</include_parent_macros>
+        <ch>6</ch>
+        <CHANNEL>$(MODULE):$(ch)</CHANNEL>
+        <Bit>B6</Bit>
+      </macros>
+      <resize_behaviour>0</resize_behaviour>
+      <visible>true</visible>
+      <group_name>Channel</group_name>
+      <border_color>
+        <color red="0" green="128" blue="255" />
+      </border_color>
+      <widget_type>Linking Container</widget_type>
+      <background_color>
+        <color red="240" green="240" blue="240" />
+      </background_color>
+      <width>1159</width>
+      <x>0</x>
+      <name>0_6</name>
+      <y>217</y>
+      <foreground_color>
+        <color red="192" green="192" blue="192" />
+      </foreground_color>
+      <actions hook="false" hook_all="false" />
+      <font>
+        <opifont.name fontName="Ubuntu" height="11" style="0">Default</opifont.name>
+      </font>
+    </widget>
+    <widget typeId="org.csstudio.opibuilder.widgets.linkingContainer" version="1.0.0">
+      <opi_file>HV_Channel.opi</opi_file>
+      <border_style>0</border_style>
+      <tooltip></tooltip>
+      <rules />
+      <enabled>true</enabled>
+      <wuid>-263aa010:1533cac2869:-4338</wuid>
+      <scripts />
+      <height>41</height>
+      <border_width>1</border_width>
+      <scale_options>
+        <width_scalable>true</width_scalable>
+        <height_scalable>true</height_scalable>
+        <keep_wh_ratio>false</keep_wh_ratio>
+      </scale_options>
+      <macros>
+        <include_parent_macros>true</include_parent_macros>
+        <ch>7</ch>
+        <CHANNEL>$(MODULE):$(ch)</CHANNEL>
+        <Bit>B7</Bit>
+      </macros>
+      <resize_behaviour>0</resize_behaviour>
+      <visible>true</visible>
+      <group_name>Channel</group_name>
+      <border_color>
+        <color red="0" green="128" blue="255" />
+      </border_color>
+      <widget_type>Linking Container</widget_type>
+      <background_color>
+        <color red="240" green="240" blue="240" />
+      </background_color>
+      <width>1159</width>
+      <x>0</x>
+      <name>0_7</name>
+      <y>248</y>
+      <foreground_color>
+        <color red="192" green="192" blue="192" />
+      </foreground_color>
+      <actions hook="false" hook_all="false" />
+      <font>
+        <opifont.name fontName="Ubuntu" height="11" style="0">Default</opifont.name>
+      </font>
+    </widget>
+    <widget typeId="org.csstudio.opibuilder.widgets.Rectangle" version="1.0.0">
+      <border_style>0</border_style>
+      <forecolor_alarm_sensitive>false</forecolor_alarm_sensitive>
+      <line_width>0</line_width>
+      <horizontal_fill>true</horizontal_fill>
+      <alarm_pulsing>false</alarm_pulsing>
+      <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+      <rules />
+      <enabled>true</enabled>
+      <wuid>588e94b:15438a66dde:-6177</wuid>
+      <transparent>false</transparent>
+      <pv_value />
+      <alpha>255</alpha>
+      <bg_gradient_color>
+        <color red="255" green="255" blue="255" />
+      </bg_gradient_color>
+      <scripts />
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+      <height>73</height>
+      <border_width>1</border_width>
+      <scale_options>
+        <width_scalable>true</width_scalable>
+        <height_scalable>true</height_scalable>
+        <keep_wh_ratio>false</keep_wh_ratio>
+      </scale_options>
+      <visible>true</visible>
+      <pv_name></pv_name>
+      <gradient>false</gradient>
+      <border_color>
+        <color red="0" green="128" blue="255" />
+      </border_color>
+      <anti_alias>true</anti_alias>
+      <line_style>0</line_style>
+      <widget_type>Rectangle</widget_type>
+      <fg_gradient_color>
+        <color red="255" green="255" blue="255" />
+      </fg_gradient_color>
+      <backcolor_alarm_sensitive>false</backcolor_alarm_sensitive>
+      <background_color>
+        <color name="Gray Background" red="240" green="240" blue="240" />
+      </background_color>
+      <width>1165</width>
+      <x>0</x>
+      <name>Rectangle</name>
+      <y>288</y>
+      <fill_level>0.0</fill_level>
+      <foreground_color>
+        <color red="255" green="0" blue="0" />
+      </foreground_color>
+      <actions hook="false" hook_all="false" />
+      <font>
+        <opifont.name fontName="Ubuntu" height="11" style="0">Default</opifont.name>
+      </font>
+      <line_color>
+        <color red="128" green="0" blue="255" />
+      </line_color>
+    </widget>
+    <widget typeId="org.csstudio.opibuilder.widgets.linkingContainer" version="1.0.0">
+      <opi_file>HV_Channel.opi</opi_file>
+      <border_style>0</border_style>
+      <tooltip></tooltip>
+      <rules />
+      <enabled>true</enabled>
+      <wuid>3cab5146:15419e14e69:-5a3b</wuid>
+      <scripts />
+      <height>67</height>
+      <border_width>1</border_width>
+      <scale_options>
+        <width_scalable>true</width_scalable>
+        <height_scalable>true</height_scalable>
+        <keep_wh_ratio>false</keep_wh_ratio>
+      </scale_options>
+      <macros>
+        <include_parent_macros>true</include_parent_macros>
+        <P>$(MODULE)</P>
+      </macros>
+      <resize_behaviour>0</resize_behaviour>
+      <visible>true</visible>
+      <group_name>Modul</group_name>
+      <border_color>
+        <color red="0" green="128" blue="255" />
+      </border_color>
+      <widget_type>Linking Container</widget_type>
+      <background_color>
+        <color red="190" green="190" blue="190" />
+      </background_color>
+      <width>985</width>
+      <x>0</x>
+      <name>Modul</name>
+      <y>354</y>
+      <foreground_color>
+        <color red="192" green="192" blue="192" />
+      </foreground_color>
+      <actions hook="false" hook_all="false" />
+      <font>
+        <opifont.name fontName="Ubuntu" height="11" style="0">Default</opifont.name>
+      </font>
+    </widget>
+    <widget typeId="org.csstudio.opibuilder.widgets.linkingContainer" version="1.0.0">
+      <opi_file>HV_Channel.opi</opi_file>
+      <border_style>0</border_style>
+      <tooltip></tooltip>
+      <rules />
+      <enabled>true</enabled>
+      <wuid>742df523:15428e26db7:-71d6</wuid>
+      <scripts />
+      <height>65</height>
+      <border_width>1</border_width>
+      <scale_options>
+        <width_scalable>true</width_scalable>
+        <height_scalable>true</height_scalable>
+        <keep_wh_ratio>false</keep_wh_ratio>
+      </scale_options>
+      <macros>
+        <include_parent_macros>true</include_parent_macros>
+        <P>$(MODULE)</P>
+      </macros>
+      <resize_behaviour>0</resize_behaviour>
+      <visible>true</visible>
+      <group_name>VarGB</group_name>
+      <border_color>
+        <color red="0" green="128" blue="255" />
+      </border_color>
+      <widget_type>Linking Container</widget_type>
+      <background_color>
+        <color red="190" green="190" blue="190" />
+      </background_color>
+      <width>805</width>
+      <x>0</x>
+      <name>VarGB</name>
+      <y>424</y>
+      <foreground_color>
+        <color red="192" green="192" blue="192" />
+      </foreground_color>
+      <actions hook="false" hook_all="false" />
+      <font>
+        <opifont.name fontName="Ubuntu" height="11" style="0">Default</opifont.name>
+      </font>
+    </widget>
+    <widget typeId="org.csstudio.opibuilder.widgets.linkingContainer" version="1.0.0">
+      <opi_file>HV_Channel.opi</opi_file>
+      <border_style>0</border_style>
+      <tooltip></tooltip>
+      <rules />
+      <enabled>true</enabled>
+      <wuid>-6fef1aa:154e6c42fbf:-6f95</wuid>
+      <scripts />
+      <height>67</height>
+      <border_width>1</border_width>
+      <scale_options>
+        <width_scalable>true</width_scalable>
+        <height_scalable>true</height_scalable>
+        <keep_wh_ratio>false</keep_wh_ratio>
+      </scale_options>
+      <macros>
+        <include_parent_macros>true</include_parent_macros>
+        <P>$(MODULE)</P>
+      </macros>
+      <resize_behaviour>0</resize_behaviour>
+      <visible>true</visible>
+      <group_name>AllOnOff</group_name>
+      <border_color>
+        <color red="0" green="128" blue="255" />
+      </border_color>
+      <widget_type>Linking Container</widget_type>
+      <background_color>
+        <color red="190" green="190" blue="190" />
+      </background_color>
+      <width>97</width>
+      <x>1054</x>
+      <name>Linking Container</name>
+      <y>354</y>
+      <foreground_color>
+        <color red="192" green="192" blue="192" />
+      </foreground_color>
+      <actions hook="false" hook_all="false" />
+      <font>
+        <opifont.name fontName="Ubuntu" height="11" style="0">Default</opifont.name>
+      </font>
+    </widget>
+    <widget typeId="org.csstudio.opibuilder.widgets.groupingContainer" version="1.0.0">
+      <border_style>0</border_style>
+      <tooltip></tooltip>
+      <rules />
+      <enabled>true</enabled>
+      <wuid>197b59a3:155738499f3:11a5</wuid>
+      <transparent>true</transparent>
+      <lock_children>true</lock_children>
+      <scripts />
+      <height>133</height>
+      <border_width>1</border_width>
+      <scale_options>
+        <width_scalable>true</width_scalable>
+        <height_scalable>true</height_scalable>
+        <keep_wh_ratio>false</keep_wh_ratio>
+      </scale_options>
+      <macros>
+        <include_parent_macros>true</include_parent_macros>
+      </macros>
+      <visible>true</visible>
+      <border_color>
+        <color name="Black" red="0" green="0" blue="0" />
+      </border_color>
+      <widget_type>Grouping Container</widget_type>
+      <background_color>
+        <color name="Background" red="255" green="255" blue="255" />
+      </background_color>
+      <width>222</width>
+      <x>912</x>
+      <name>Group Name</name>
+      <y>255</y>
+      <foreground_color>
+        <color red="192" green="192" blue="192" />
+      </foreground_color>
+      <actions hook="false" hook_all="false" />
+      <fc>false</fc>
+      <show_scrollbar>false</show_scrollbar>
+      <font>
+        <opifont.name fontName="Ubuntu" height="11" style="1">Default Bold</opifont.name>
+      </font>
+      <widget typeId="org.csstudio.opibuilder.widgets.TextUpdate" version="1.0.0">
+        <border_style>0</border_style>
+        <forecolor_alarm_sensitive>false</forecolor_alarm_sensitive>
+        <alarm_pulsing>false</alarm_pulsing>
+        <precision>0</precision>
+        <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+        <horizontal_alignment>1</horizontal_alignment>
+        <rules />
+        <enabled>true</enabled>
+        <wuid>588e94b:15438a66dde:-615b</wuid>
+        <transparent>true</transparent>
+        <pv_value />
+        <auto_size>false</auto_size>
+        <text>Input Error</text>
+        <rotation_angle>270.0</rotation_angle>
+        <scripts />
+        <border_alarm_sensitive>true</border_alarm_sensitive>
+        <show_units>true</show_units>
+        <height>57</height>
+        <border_width>1</border_width>
+        <scale_options>
+          <width_scalable>true</width_scalable>
+          <height_scalable>true</height_scalable>
+          <keep_wh_ratio>false</keep_wh_ratio>
+        </scale_options>
+        <visible>true</visible>
+        <pv_name></pv_name>
+        <vertical_alignment>0</vertical_alignment>
+        <border_color>
+          <color red="0" green="128" blue="255" />
+        </border_color>
+        <precision_from_pv>true</precision_from_pv>
+        <widget_type>Text Update</widget_type>
+        <backcolor_alarm_sensitive>false</backcolor_alarm_sensitive>
+        <wrap_words>false</wrap_words>
+        <format_type>0</format_type>
+        <background_color>
+          <color red="255" green="255" blue="255" />
+        </background_color>
+        <width>15</width>
+        <x>0</x>
+        <name>Text Update</name>
+        <y>13</y>
+        <foreground_color>
+          <color red="0" green="0" blue="0" />
+        </foreground_color>
+        <actions hook="false" hook_all="false" />
+        <font>
+          <fontdata fontName="Ubuntu" height="8" style="0" />
+        </font>
+      </widget>
+      <widget typeId="org.csstudio.opibuilder.widgets.TextUpdate" version="1.0.0">
+        <border_style>0</border_style>
+        <forecolor_alarm_sensitive>false</forecolor_alarm_sensitive>
+        <alarm_pulsing>false</alarm_pulsing>
+        <precision>0</precision>
+        <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+        <horizontal_alignment>2</horizontal_alignment>
+        <rules />
+        <enabled>true</enabled>
+        <wuid>588e94b:15438a66dde:-615a</wuid>
+        <transparent>true</transparent>
+        <pv_value />
+        <auto_size>false</auto_size>
+        <text>isOn</text>
+        <rotation_angle>270.0</rotation_angle>
+        <scripts />
+        <border_alarm_sensitive>true</border_alarm_sensitive>
+        <show_units>true</show_units>
+        <height>35</height>
+        <border_width>1</border_width>
+        <scale_options>
+          <width_scalable>true</width_scalable>
+          <height_scalable>true</height_scalable>
+          <keep_wh_ratio>false</keep_wh_ratio>
+        </scale_options>
+        <visible>true</visible>
+        <pv_name></pv_name>
+        <vertical_alignment>1</vertical_alignment>
+        <border_color>
+          <color red="0" green="128" blue="255" />
+        </border_color>
+        <precision_from_pv>true</precision_from_pv>
+        <widget_type>Text Update</widget_type>
+        <backcolor_alarm_sensitive>false</backcolor_alarm_sensitive>
+        <wrap_words>false</wrap_words>
+        <format_type>0</format_type>
+        <background_color>
+          <color red="255" green="255" blue="255" />
+        </background_color>
+        <width>17</width>
+        <x>16</x>
+        <name>Text Update_1</name>
+        <y>11</y>
+        <foreground_color>
+          <color red="0" green="0" blue="0" />
+        </foreground_color>
+        <actions hook="false" hook_all="false" />
+        <font>
+          <fontdata fontName="Ubuntu" height="8" style="0" />
+        </font>
+      </widget>
+      <widget typeId="org.csstudio.opibuilder.widgets.TextUpdate" version="1.0.0">
+        <border_style>0</border_style>
+        <forecolor_alarm_sensitive>false</forecolor_alarm_sensitive>
+        <alarm_pulsing>false</alarm_pulsing>
+        <precision>0</precision>
+        <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+        <horizontal_alignment>2</horizontal_alignment>
+        <rules />
+        <enabled>true</enabled>
+        <wuid>588e94b:15438a66dde:-4809</wuid>
+        <transparent>true</transparent>
+        <pv_value />
+        <auto_size>false</auto_size>
+        <text>isVoltageRamp</text>
+        <rotation_angle>270.0</rotation_angle>
+        <scripts />
+        <border_alarm_sensitive>true</border_alarm_sensitive>
+        <show_units>true</show_units>
+        <height>85</height>
+        <border_width>1</border_width>
+        <scale_options>
+          <width_scalable>true</width_scalable>
+          <height_scalable>true</height_scalable>
+          <keep_wh_ratio>false</keep_wh_ratio>
+        </scale_options>
+        <visible>true</visible>
+        <pv_name></pv_name>
+        <vertical_alignment>1</vertical_alignment>
+        <border_color>
+          <color red="0" green="128" blue="255" />
+        </border_color>
+        <precision_from_pv>true</precision_from_pv>
+        <widget_type>Text Update</widget_type>
+        <backcolor_alarm_sensitive>false</backcolor_alarm_sensitive>
+        <wrap_words>false</wrap_words>
+        <format_type>0</format_type>
+        <background_color>
+          <color red="255" green="255" blue="255" />
+        </background_color>
+        <width>17</width>
+        <x>32</x>
+        <name>Text Update_1</name>
+        <y>8</y>
+        <foreground_color>
+          <color red="0" green="0" blue="0" />
+        </foreground_color>
+        <actions hook="false" hook_all="false" />
+        <font>
+          <fontdata fontName="Ubuntu" height="8" style="0" />
+        </font>
+      </widget>
+      <widget typeId="org.csstudio.opibuilder.widgets.TextUpdate" version="1.0.0">
+        <border_style>0</border_style>
+        <forecolor_alarm_sensitive>false</forecolor_alarm_sensitive>
+        <alarm_pulsing>false</alarm_pulsing>
+        <precision>0</precision>
+        <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+        <horizontal_alignment>2</horizontal_alignment>
+        <rules />
+        <enabled>true</enabled>
+        <wuid>588e94b:15438a66dde:-3744</wuid>
+        <transparent>true</transparent>
+        <pv_value />
+        <auto_size>false</auto_size>
+        <text>isEmergency</text>
+        <rotation_angle>270.0</rotation_angle>
+        <scripts />
+        <border_alarm_sensitive>true</border_alarm_sensitive>
+        <show_units>true</show_units>
+        <height>76</height>
+        <border_width>1</border_width>
+        <scale_options>
+          <width_scalable>true</width_scalable>
+          <height_scalable>true</height_scalable>
+          <keep_wh_ratio>false</keep_wh_ratio>
+        </scale_options>
+        <visible>true</visible>
+        <pv_name></pv_name>
+        <vertical_alignment>1</vertical_alignment>
+        <border_color>
+          <color red="0" green="128" blue="255" />
+        </border_color>
+        <precision_from_pv>true</precision_from_pv>
+        <widget_type>Text Update</widget_type>
+        <backcolor_alarm_sensitive>false</backcolor_alarm_sensitive>
+        <wrap_words>false</wrap_words>
+        <format_type>0</format_type>
+        <background_color>
+          <color red="255" green="255" blue="255" />
+        </background_color>
+        <width>15</width>
+        <x>50</x>
+        <name>Text Update_1</name>
+        <y>7</y>
+        <foreground_color>
+          <color red="0" green="0" blue="0" />
+        </foreground_color>
+        <actions hook="false" hook_all="false" />
+        <font>
+          <fontdata fontName="Ubuntu" height="8" style="0" />
+        </font>
+      </widget>
+      <widget typeId="org.csstudio.opibuilder.widgets.TextUpdate" version="1.0.0">
+        <border_style>0</border_style>
+        <forecolor_alarm_sensitive>false</forecolor_alarm_sensitive>
+        <alarm_pulsing>false</alarm_pulsing>
+        <precision>0</precision>
+        <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+        <horizontal_alignment>2</horizontal_alignment>
+        <rules />
+        <enabled>true</enabled>
+        <wuid>588e94b:15438a66dde:-3732</wuid>
+        <transparent>true</transparent>
+        <pv_value />
+        <auto_size>false</auto_size>
+        <text>isCC</text>
+        <rotation_angle>270.0</rotation_angle>
+        <scripts />
+        <border_alarm_sensitive>true</border_alarm_sensitive>
+        <show_units>true</show_units>
+        <height>32</height>
+        <border_width>1</border_width>
+        <scale_options>
+          <width_scalable>true</width_scalable>
+          <height_scalable>true</height_scalable>
+          <keep_wh_ratio>false</keep_wh_ratio>
+        </scale_options>
+        <visible>true</visible>
+        <pv_name></pv_name>
+        <vertical_alignment>1</vertical_alignment>
+        <border_color>
+          <color red="0" green="128" blue="255" />
+        </border_color>
+        <precision_from_pv>true</precision_from_pv>
+        <widget_type>Text Update</widget_type>
+        <backcolor_alarm_sensitive>false</backcolor_alarm_sensitive>
+        <wrap_words>false</wrap_words>
+        <format_type>0</format_type>
+        <background_color>
+          <color red="255" green="255" blue="255" />
+        </background_color>
+        <width>19</width>
+        <x>62</x>
+        <name>Text Update_1</name>
+        <y>10</y>
+        <foreground_color>
+          <color red="0" green="0" blue="0" />
+        </foreground_color>
+        <actions hook="false" hook_all="false" />
+        <font>
+          <fontdata fontName="Ubuntu" height="8" style="0" />
+        </font>
+      </widget>
+      <widget typeId="org.csstudio.opibuilder.widgets.TextUpdate" version="1.0.0">
+        <border_style>0</border_style>
+        <forecolor_alarm_sensitive>false</forecolor_alarm_sensitive>
+        <alarm_pulsing>false</alarm_pulsing>
+        <precision>0</precision>
+        <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+        <horizontal_alignment>2</horizontal_alignment>
+        <rules />
+        <enabled>true</enabled>
+        <wuid>588e94b:15438a66dde:-3714</wuid>
+        <transparent>true</transparent>
+        <pv_value />
+        <auto_size>false</auto_size>
+        <text>isCV</text>
+        <rotation_angle>270.0</rotation_angle>
+        <scripts />
+        <border_alarm_sensitive>true</border_alarm_sensitive>
+        <show_units>true</show_units>
+        <height>33</height>
+        <border_width>1</border_width>
+        <scale_options>
+          <width_scalable>true</width_scalable>
+          <height_scalable>true</height_scalable>
+          <keep_wh_ratio>false</keep_wh_ratio>
+        </scale_options>
+        <visible>true</visible>
+        <pv_name></pv_name>
+        <vertical_alignment>1</vertical_alignment>
+        <border_color>
+          <color red="0" green="128" blue="255" />
+        </border_color>
+        <precision_from_pv>true</precision_from_pv>
+        <widget_type>Text Update</widget_type>
+        <backcolor_alarm_sensitive>false</backcolor_alarm_sensitive>
+        <wrap_words>false</wrap_words>
+        <format_type>0</format_type>
+        <background_color>
+          <color red="255" green="255" blue="255" />
+        </background_color>
+        <width>17</width>
+        <x>80</x>
+        <name>Text Update_1</name>
+        <y>10</y>
+        <foreground_color>
+          <color red="0" green="0" blue="0" />
+        </foreground_color>
+        <actions hook="false" hook_all="false" />
+        <font>
+          <fontdata fontName="Ubuntu" height="8" style="0" />
+        </font>
+      </widget>
+      <widget typeId="org.csstudio.opibuilder.widgets.TextUpdate" version="1.0.0">
+        <border_style>0</border_style>
+        <forecolor_alarm_sensitive>false</forecolor_alarm_sensitive>
+        <alarm_pulsing>false</alarm_pulsing>
+        <precision>0</precision>
+        <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+        <horizontal_alignment>2</horizontal_alignment>
+        <rules />
+        <enabled>true</enabled>
+        <wuid>588e94b:15438a66dde:-3702</wuid>
+        <transparent>true</transparent>
+        <pv_value />
+        <auto_size>false</auto_size>
+        <text>isCurrentBound</text>
+        <rotation_angle>270.0</rotation_angle>
+        <scripts />
+        <border_alarm_sensitive>true</border_alarm_sensitive>
+        <show_units>true</show_units>
+        <height>91</height>
+        <border_width>1</border_width>
+        <scale_options>
+          <width_scalable>true</width_scalable>
+          <height_scalable>true</height_scalable>
+          <keep_wh_ratio>false</keep_wh_ratio>
+        </scale_options>
+        <visible>true</visible>
+        <pv_name></pv_name>
+        <vertical_alignment>1</vertical_alignment>
+        <border_color>
+          <color red="0" green="128" blue="255" />
+        </border_color>
+        <precision_from_pv>true</precision_from_pv>
+        <widget_type>Text Update</widget_type>
+        <backcolor_alarm_sensitive>false</backcolor_alarm_sensitive>
+        <wrap_words>false</wrap_words>
+        <format_type>0</format_type>
+        <background_color>
+          <color red="255" green="255" blue="255" />
+        </background_color>
+        <width>17</width>
+        <x>96</x>
+        <name>Text Update_1</name>
+        <y>6</y>
+        <foreground_color>
+          <color red="0" green="0" blue="0" />
+        </foreground_color>
+        <actions hook="false" hook_all="false" />
+        <font>
+          <fontdata fontName="Ubuntu" height="8" style="0" />
+        </font>
+      </widget>
+      <widget typeId="org.csstudio.opibuilder.widgets.TextUpdate" version="1.0.0">
+        <border_style>0</border_style>
+        <forecolor_alarm_sensitive>false</forecolor_alarm_sensitive>
+        <alarm_pulsing>false</alarm_pulsing>
+        <precision>0</precision>
+        <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+        <horizontal_alignment>2</horizontal_alignment>
+        <rules />
+        <enabled>true</enabled>
+        <wuid>588e94b:15438a66dde:-36f8</wuid>
+        <transparent>true</transparent>
+        <pv_value />
+        <auto_size>false</auto_size>
+        <text>isVoltageBound</text>
+        <rotation_angle>270.0</rotation_angle>
+        <scripts />
+        <border_alarm_sensitive>true</border_alarm_sensitive>
+        <show_units>true</show_units>
+        <height>103</height>
+        <border_width>1</border_width>
+        <scale_options>
+          <width_scalable>true</width_scalable>
+          <height_scalable>true</height_scalable>
+          <keep_wh_ratio>false</keep_wh_ratio>
+        </scale_options>
+        <visible>true</visible>
+        <pv_name></pv_name>
+        <vertical_alignment>1</vertical_alignment>
+        <border_color>
+          <color red="0" green="128" blue="255" />
+        </border_color>
+        <precision_from_pv>true</precision_from_pv>
+        <widget_type>Text Update</widget_type>
+        <backcolor_alarm_sensitive>false</backcolor_alarm_sensitive>
+        <wrap_words>false</wrap_words>
+        <format_type>0</format_type>
+        <background_color>
+          <color red="255" green="255" blue="255" />
+        </background_color>
+        <width>17</width>
+        <x>112</x>
+        <name>Text Update_1</name>
+        <y>0</y>
+        <foreground_color>
+          <color red="0" green="0" blue="0" />
+        </foreground_color>
+        <actions hook="false" hook_all="false" />
+        <font>
+          <fontdata fontName="Ubuntu" height="8" style="0" />
+        </font>
+      </widget>
+      <widget typeId="org.csstudio.opibuilder.widgets.TextUpdate" version="1.0.0">
+        <border_style>0</border_style>
+        <forecolor_alarm_sensitive>false</forecolor_alarm_sensitive>
+        <alarm_pulsing>false</alarm_pulsing>
+        <precision>0</precision>
+        <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+        <horizontal_alignment>2</horizontal_alignment>
+        <rules />
+        <enabled>true</enabled>
+        <wuid>588e94b:15438a66dde:-3198</wuid>
+        <transparent>true</transparent>
+        <pv_value />
+        <auto_size>false</auto_size>
+        <text>isEventInhibit</text>
+        <rotation_angle>270.0</rotation_angle>
+        <scripts />
+        <border_alarm_sensitive>true</border_alarm_sensitive>
+        <show_units>true</show_units>
+        <height>92</height>
+        <border_width>1</border_width>
+        <scale_options>
+          <width_scalable>true</width_scalable>
+          <height_scalable>true</height_scalable>
+          <keep_wh_ratio>false</keep_wh_ratio>
+        </scale_options>
+        <visible>true</visible>
+        <pv_name></pv_name>
+        <vertical_alignment>1</vertical_alignment>
+        <border_color>
+          <color red="0" green="128" blue="255" />
+        </border_color>
+        <precision_from_pv>true</precision_from_pv>
+        <widget_type>Text Update</widget_type>
+        <backcolor_alarm_sensitive>false</backcolor_alarm_sensitive>
+        <wrap_words>false</wrap_words>
+        <format_type>0</format_type>
+        <background_color>
+          <color red="255" green="255" blue="255" />
+        </background_color>
+        <width>17</width>
+        <x>128</x>
+        <name>Text Update_1</name>
+        <y>0</y>
+        <foreground_color>
+          <color red="0" green="0" blue="0" />
+        </foreground_color>
+        <actions hook="false" hook_all="false" />
+        <font>
+          <fontdata fontName="Ubuntu" height="8" style="0" />
+        </font>
+      </widget>
+      <widget typeId="org.csstudio.opibuilder.widgets.TextUpdate" version="1.0.0">
+        <border_style>0</border_style>
+        <forecolor_alarm_sensitive>false</forecolor_alarm_sensitive>
+        <alarm_pulsing>false</alarm_pulsing>
+        <precision>0</precision>
+        <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+        <horizontal_alignment>2</horizontal_alignment>
+        <rules />
+        <enabled>true</enabled>
+        <wuid>588e94b:15438a66dde:-3189</wuid>
+        <transparent>true</transparent>
+        <pv_value />
+        <auto_size>false</auto_size>
+        <text>isTrip</text>
+        <rotation_angle>270.0</rotation_angle>
+        <scripts />
+        <border_alarm_sensitive>true</border_alarm_sensitive>
+        <show_units>true</show_units>
+        <height>38</height>
+        <border_width>1</border_width>
+        <scale_options>
+          <width_scalable>true</width_scalable>
+          <height_scalable>true</height_scalable>
+          <keep_wh_ratio>false</keep_wh_ratio>
+        </scale_options>
+        <visible>true</visible>
+        <pv_name></pv_name>
+        <vertical_alignment>1</vertical_alignment>
+        <border_color>
+          <color red="0" green="128" blue="255" />
+        </border_color>
+        <precision_from_pv>true</precision_from_pv>
+        <widget_type>Text Update</widget_type>
+        <backcolor_alarm_sensitive>false</backcolor_alarm_sensitive>
+        <wrap_words>false</wrap_words>
+        <format_type>0</format_type>
+        <background_color>
+          <color red="255" green="255" blue="255" />
+        </background_color>
+        <width>16</width>
+        <x>144</x>
+        <name>Text Update_1</name>
+        <y>10</y>
+        <foreground_color>
+          <color red="0" green="0" blue="0" />
+        </foreground_color>
+        <actions hook="false" hook_all="false" />
+        <font>
+          <fontdata fontName="Ubuntu" height="8" style="0" />
+        </font>
+      </widget>
+      <widget typeId="org.csstudio.opibuilder.widgets.TextUpdate" version="1.0.0">
+        <border_style>0</border_style>
+        <forecolor_alarm_sensitive>false</forecolor_alarm_sensitive>
+        <alarm_pulsing>false</alarm_pulsing>
+        <precision>0</precision>
+        <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+        <horizontal_alignment>2</horizontal_alignment>
+        <rules />
+        <enabled>true</enabled>
+        <wuid>588e94b:15438a66dde:-317d</wuid>
+        <transparent>true</transparent>
+        <pv_value />
+        <auto_size>false</auto_size>
+        <text>isCurrentLimit</text>
+        <rotation_angle>270.0</rotation_angle>
+        <scripts />
+        <border_alarm_sensitive>true</border_alarm_sensitive>
+        <show_units>true</show_units>
+        <height>91</height>
+        <border_width>1</border_width>
+        <scale_options>
+          <width_scalable>true</width_scalable>
+          <height_scalable>true</height_scalable>
+          <keep_wh_ratio>false</keep_wh_ratio>
+        </scale_options>
+        <visible>true</visible>
+        <pv_name></pv_name>
+        <vertical_alignment>1</vertical_alignment>
+        <border_color>
+          <color red="0" green="128" blue="255" />
+        </border_color>
+        <precision_from_pv>true</precision_from_pv>
+        <widget_type>Text Update</widget_type>
+        <backcolor_alarm_sensitive>false</backcolor_alarm_sensitive>
+        <wrap_words>false</wrap_words>
+        <format_type>0</format_type>
+        <background_color>
+          <color red="255" green="255" blue="255" />
+        </background_color>
+        <width>18</width>
+        <x>158</x>
+        <name>Text Update_1</name>
+        <y>3</y>
+        <foreground_color>
+          <color red="0" green="0" blue="0" />
+        </foreground_color>
+        <actions hook="false" hook_all="false" />
+        <font>
+          <fontdata fontName="Ubuntu" height="8" style="0" />
+        </font>
+      </widget>
+      <widget typeId="org.csstudio.opibuilder.widgets.TextUpdate" version="1.0.0">
+        <border_style>0</border_style>
+        <forecolor_alarm_sensitive>false</forecolor_alarm_sensitive>
+        <alarm_pulsing>false</alarm_pulsing>
+        <precision>0</precision>
+        <tooltip>$(pv_name)
+$(pv_value)</tooltip>
+        <horizontal_alignment>2</horizontal_alignment>
+        <rules />
+        <enabled>true</enabled>
+        <wuid>588e94b:15438a66dde:-3171</wuid>
+        <transparent>true</transparent>
+        <pv_value />
+        <auto_size>false</auto_size>
+        <text>isVoltageLimit</text>
+        <rotation_angle>270.0</rotation_angle>
+        <scripts />
+        <border_alarm_sensitive>true</border_alarm_sensitive>
+        <show_units>true</show_units>
+        <height>91</height>
+        <border_width>1</border_width>
+        <scale_options>
+          <width_scalable>true</width_scalable>
+          <height_scalable>true</height_scalable>
+          <keep_wh_ratio>false</keep_wh_ratio>
+        </scale_options>
+        <visible>true</visible>
+        <pv_name></pv_name>
+        <vertical_alignment>1</vertical_alignment>
+        <border_color>
+          <color red="0" green="128" blue="255" />
+        </border_color>
+        <precision_from_pv>true</precision_from_pv>
+        <widget_type>Text Update</widget_type>
+        <backcolor_alarm_sensitive>false</backcolor_alarm_sensitive>
+        <wrap_words>false</wrap_words>
+        <format_type>0</format_type>
+        <background_color>
+          <color red="255" green="255" blue="255" />
+        </background_color>
+        <width>18</width>
+        <x>174</x>
+        <name>Text Update_1</name>
+        <y>3</y>
+        <foreground_color>
+          <color red="0" green="0" blue="0" />
+        </foreground_color>
+        <actions hook="false" hook_all="false" />
+        <font>
+          <fontdata fontName="Ubuntu" height="8" style="0" />
+        </font>
+      </widget>
+    </widget>
+  </widget>
+</display>

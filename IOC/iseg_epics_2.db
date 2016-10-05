@@ -9,67 +9,67 @@
 record(dfanout, "${DEV}:${CAN_LINE}:${GROUP}:VoltageSet") {    #USE THIS RECORD FOR CSS AS VOLTAGE SET
   field( SELM, "All" )
   field( EGU, "V")
-  field( OUTA, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet.DO3 NPP")
-  field( OUTB, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet.DO6 NPP")
-  field( OUTC, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet.DO9 NPP")
-  field( OUTD, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet2.DO3 NPP")
-  field( OUTE, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet2.DO6 NPP")
-  field( OUTF, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet2.DO9 NPP")
-  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet PP")
+  field( OUTA, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet_.DO3 NPP")
+  field( OUTB, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet_.DO6 NPP")
+  field( OUTC, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet_.DO9 NPP")
+  field( OUTD, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet2_.DO3 NPP")
+  field( OUTE, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet2_.DO6 NPP")
+  field( OUTF, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet2_.DO9 NPP")
+  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet_ PP")
 }
 
-record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet") {    #each "block" is one Module
+record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet_") {    #each "block" is one Module
   field( SELM, "All" )
 
   field( DO1, "$(CH_SEL_MOD_0)" )                  # Channels to execute (binary)
   field( LNK1, "${DEV}:${CAN_LINE}:0:GroupSelection.VAL NPP")
   field( DO2, "1" ) # 1 is equal to Voltage
-  field( LNK2, "${DEV}:${CAN_LINE}:0:StartBehaviour.SELN NPP")
+  field( LNK2, "${DEV}:${CAN_LINE}:0:StartBehaviour_.SELN NPP")
   #field( DO3, "")
-  field( LNK3, "${DEV}:${CAN_LINE}:0:StartBehaviour.VAL NPP")
+  field( LNK3, "${DEV}:${CAN_LINE}:0:StartBehaviour_.VAL NPP")
 
   field( DO4, "$(CH_SEL_MOD_1)" )                    # Channels to execute (binary)
   field( LNK4, "${DEV}:${CAN_LINE}:1:GroupSelection.VAL NPP" )
   field( DO5, "1" ) # 1 is equal to Voltage
-  field( LNK5, "${DEV}:${CAN_LINE}:1:StartBehaviour.SELN NPP" )
+  field( LNK5, "${DEV}:${CAN_LINE}:1:StartBehaviour_.SELN NPP" )
   #field( DO6, "" )
-  field( LNK6, "${DEV}:${CAN_LINE}:1:StartBehaviour.VAL NPP" )
+  field( LNK6, "${DEV}:${CAN_LINE}:1:StartBehaviour_.VAL NPP" )
 
   field( DO7, "$(CH_SEL_MOD_2)" )                    # Channels to execute (binary)
   field( LNK7, "${DEV}:${CAN_LINE}:2:GroupSelection.VAL NPP" )
   field( DO8, "1" ) # 1 is equal to Voltage
-  field( LNK8, "${DEV}:${CAN_LINE}:2:StartBehaviour.SELN NPP" )
+  field( LNK8, "${DEV}:${CAN_LINE}:2:StartBehaviour_.SELN NPP" )
   #field( DO9, "" )
-  field( LNK9, "${DEV}:${CAN_LINE}:2:StartBehaviour.VAL NPP" )
+  field( LNK9, "${DEV}:${CAN_LINE}:2:StartBehaviour_.VAL NPP" )
 
-  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet2" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet2_" )
 }
 
-record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet2") {    #each "block" is one Module
+record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet2_") {    #each "block" is one Module
   field( SELM, "All" )
 
   field( DO1, "$(CH_SEL_MOD_3)" )                  # Channels to execute (binary)
   field( LNK1, "${DEV}:${CAN_LINE}:3:GroupSelection.VAL NPP")
   field( DO2, "1" ) # 1 is equal to Voltage
-  field( LNK2, "${DEV}:${CAN_LINE}:3:StartBehaviour.SELN NPP")
+  field( LNK2, "${DEV}:${CAN_LINE}:3:StartBehaviour_.SELN NPP")
   #field( DO3, "")
-  field( LNK3, "${DEV}:${CAN_LINE}:3:StartBehaviour.VAL NPP")
+  field( LNK3, "${DEV}:${CAN_LINE}:3:StartBehaviour_.VAL NPP")
 
   field( DO4, "$(CH_SEL_MOD_4)" )                    # Channels to execute (binary)
   field( LNK4, "${DEV}:${CAN_LINE}:4:GroupSelection.VAL NPP" )
   field( DO5, "1" ) # 1 is equal to Voltage
-  field( LNK5, "${DEV}:${CAN_LINE}:4:StartBehaviour.SELN NPP" )
+  field( LNK5, "${DEV}:${CAN_LINE}:4:StartBehaviour_.SELN NPP" )
   #field( DO6, "" )
-  field( LNK6, "${DEV}:${CAN_LINE}:4:StartBehaviour.VAL NPP" )
+  field( LNK6, "${DEV}:${CAN_LINE}:4:StartBehaviour_.VAL NPP" )
 
   field( DO7, "$(CH_SEL_MOD_5)" )                    # Channels to execute (binary)
   field( LNK7, "${DEV}:${CAN_LINE}:5:GroupSelection.VAL NPP" )
   field( DO8, "1" ) # 1 is equal to Voltage
-  field( LNK8, "${DEV}:${CAN_LINE}:5:StartBehaviour.SELN NPP" )
+  field( LNK8, "${DEV}:${CAN_LINE}:5:StartBehaviour_.SELN NPP" )
   #field( DO9, "" )
-  field( LNK9, "${DEV}:${CAN_LINE}:5:StartBehaviour.VAL NPP" )
+  field( LNK9, "${DEV}:${CAN_LINE}:5:StartBehaviour_.VAL NPP" )
 
-  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:Start" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:Start_" )
 }
 
 ###########################################################################
@@ -78,67 +78,67 @@ record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageSet2") {    #each "block" is 
 
 record(dfanout, "${DEV}:${CAN_LINE}:${GROUP}:SwitchOn") {        #USE THIS RECORD FOR CSS SWITCH ON
   field( SELM, "All" )
-  field( OUTA, "${DEV}:${CAN_LINE}:${GROUP}:SeqSwitchOn.DO3 PP")
-  field( OUTB, "${DEV}:${CAN_LINE}:${GROUP}:SeqSwitchOn.DO6 PP")
-  field( OUTC, "${DEV}:${CAN_LINE}:${GROUP}:SeqSwitchOn.DO9 PP")
-  field( OUTD, "${DEV}:${CAN_LINE}:${GROUP}:SeqSwitchOn2.DO3 PP")
-  field( OUTE, "${DEV}:${CAN_LINE}:${GROUP}:SeqSwitchOn2.DO6 PP")
-  field( OUTF, "${DEV}:${CAN_LINE}:${GROUP}:SeqSwitchOn2.DO9 PP")
+  field( OUTA, "${DEV}:${CAN_LINE}:${GROUP}:SeqSwitchOn_.DO3 PP")
+  field( OUTB, "${DEV}:${CAN_LINE}:${GROUP}:SeqSwitchOn_.DO6 PP")
+  field( OUTC, "${DEV}:${CAN_LINE}:${GROUP}:SeqSwitchOn_.DO9 PP")
+  field( OUTD, "${DEV}:${CAN_LINE}:${GROUP}:SeqSwitchOn2_.DO3 PP")
+  field( OUTE, "${DEV}:${CAN_LINE}:${GROUP}:SeqSwitchOn2_.DO6 PP")
+  field( OUTF, "${DEV}:${CAN_LINE}:${GROUP}:SeqSwitchOn2_.DO9 PP")
 }
 
 
-record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqSwitchOn") {    #each "block" is one Module
+record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqSwitchOn_") {    #each "block" is one Module
   field( SELM, "All" )
 
   field( DO1, "$(CH_SEL_MOD_0)" )                  # Channels to execute (binary)
   field( LNK1, "${DEV}:${CAN_LINE}:0:GroupSelection.VAL NPP" )
   field( DO2, "2" ) # 2 is equal to SwitchOn
-  field( LNK2, "${DEV}:${CAN_LINE}:0:StartBehaviour.SELN NPP" )
+  field( LNK2, "${DEV}:${CAN_LINE}:0:StartBehaviour_.SELN NPP" )
   #field( DO3, "")
-  field( LNK3, "${DEV}:${CAN_LINE}:0:StartBehaviour.VAL NPP")
+  field( LNK3, "${DEV}:${CAN_LINE}:0:StartBehaviour_.VAL NPP")
 
   field( DO4, "$(CH_SEL_MOD_1)" )                    # Channels to execute (binary)
   field( LNK4, "${DEV}:${CAN_LINE}:1:GroupSelection.VAL NPP" )
   field( DO5, "2" ) # 2 is equal to SwitchOn
-  field( LNK5, "${DEV}:${CAN_LINE}:1:StartBehaviour.SELN NPP" )
+  field( LNK5, "${DEV}:${CAN_LINE}:1:StartBehaviour_.SELN NPP" )
   #field( DO6, "" )
-  field( LNK6, "${DEV}:${CAN_LINE}:1:StartBehaviour.VAL NPP" )
+  field( LNK6, "${DEV}:${CAN_LINE}:1:StartBehaviour_.VAL NPP" )
 
   field( DO7, "$(CH_SEL_MOD_2)" )                    # Channels to execute (binary)
   field( LNK7, "${DEV}:${CAN_LINE}:2:GroupSelection.VAL NPP" )
   field( DO8, "2" ) # 2 is equal to SwitchOn
-  field( LNK8, "${DEV}:${CAN_LINE}:2:StartBehaviour.SELN NPP" )
+  field( LNK8, "${DEV}:${CAN_LINE}:2:StartBehaviour_.SELN NPP" )
   #field( DO9, "" )
-  field( LNK9, "${DEV}:${CAN_LINE}:2:StartBehaviour.VAL NPP" )
+  field( LNK9, "${DEV}:${CAN_LINE}:2:StartBehaviour_.VAL NPP" )
 
-  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqSwitchOn2" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqSwitchOn2_" )
 }
 
-record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqSwitchOn2") {    #each "block" is one Module
+record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqSwitchOn2_") {    #each "block" is one Module
   field( SELM, "All" )
 
   field( DO1, "$(CH_SEL_MOD_3)" )                  # Channels to execute (binary)
   field( LNK1, "${DEV}:${CAN_LINE}:3:GroupSelection.VAL NPP" )
   field( DO2, "2" ) # 2 is equal to SwitchOn
-  field( LNK2, "${DEV}:${CAN_LINE}:3:StartBehaviour.SELN NPP" )
+  field( LNK2, "${DEV}:${CAN_LINE}:3:StartBehaviour_.SELN NPP" )
   #field( DO3, "")
-  field( LNK3, "${DEV}:${CAN_LINE}:3:StartBehaviour.VAL NPP")
+  field( LNK3, "${DEV}:${CAN_LINE}:3:StartBehaviour_.VAL NPP")
 
   field( DO4, "$(CH_SEL_MOD_4)" )                    # Channels to execute (binary)
   field( LNK4, "${DEV}:${CAN_LINE}:4:GroupSelection.VAL NPP" )
   field( DO5, "2" ) # 2 is equal to SwitchOn
-  field( LNK5, "${DEV}:${CAN_LINE}:4:StartBehaviour.SELN NPP" )
+  field( LNK5, "${DEV}:${CAN_LINE}:4:StartBehaviour_.SELN NPP" )
   #field( DO6, "" )
-  field( LNK6, "${DEV}:${CAN_LINE}:4:StartBehaviour.VAL NPP" )
+  field( LNK6, "${DEV}:${CAN_LINE}:4:StartBehaviour_.VAL NPP" )
 
   field( DO7, "$(CH_SEL_MOD_5)" )                    # Channels to execute (binary)
   field( LNK7, "${DEV}:${CAN_LINE}:5:GroupSelection.VAL NPP" )
   field( DO8, "2" ) # 2 is equal to SwitchOn
-  field( LNK8, "${DEV}:${CAN_LINE}:5:StartBehaviour.SELN NPP" )
+  field( LNK8, "${DEV}:${CAN_LINE}:5:StartBehaviour_.SELN NPP" )
   #field( DO9, "" )
-  field( LNK9, "${DEV}:${CAN_LINE}:5:StartBehaviour.VAL NPP" )
+  field( LNK9, "${DEV}:${CAN_LINE}:5:StartBehaviour_.VAL NPP" )
 
-  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:Start" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:Start_" )
 }
 
 ###########################################################################
@@ -149,67 +149,67 @@ record(dfanout, "${DEV}:${CAN_LINE}:${GROUP}:CurrentSet") {    #USE THIS RECORD 
   field( SELM, "All" )
   field( EGU, "A")
   field( PREC, "4")
-  field( OUTA, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet.DO3 NPP")
-  field( OUTB, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet.DO6 NPP")
-  field( OUTC, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet.DO9 NPP")
-  field( OUTD, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet2.DO3 NPP")
-  field( OUTE, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet2.DO6 NPP")
-  field( OUTF, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet2.DO9 NPP")
-  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet PP")
+  field( OUTA, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet_.DO3 NPP")
+  field( OUTB, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet_.DO6 NPP")
+  field( OUTC, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet_.DO9 NPP")
+  field( OUTD, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet2_.DO3 NPP")
+  field( OUTE, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet2_.DO6 NPP")
+  field( OUTF, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet2_.DO9 NPP")
+  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet_ PP")
 }
 
-record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet") {    #each "block" is one Module
+record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet_") {    #each "block" is one Module
   field( SELM, "All" )
 
   field( DO1, "$(CH_SEL_MOD_0)" )                  # Channels to execute (binary)
   field( LNK1, "${DEV}:${CAN_LINE}:0:GroupSelection.VAL NPP")
   field( DO2, "4" ) # 4 is equal to Current
-  field( LNK2, "${DEV}:${CAN_LINE}:0:StartBehaviour.SELN NPP")
+  field( LNK2, "${DEV}:${CAN_LINE}:0:StartBehaviour_.SELN NPP")
   #field( DO3, "")
-  field( LNK3, "${DEV}:${CAN_LINE}:0:StartBehaviour.VAL NPP")
+  field( LNK3, "${DEV}:${CAN_LINE}:0:StartBehaviour_.VAL NPP")
 
   field( DO4, "$(CH_SEL_MOD_1)" )                    # Channels to execute (binary)
   field( LNK4, "${DEV}:${CAN_LINE}:1:GroupSelection.VAL NPP" )
   field( DO5, "4" ) # 4 is equal to Current
-  field( LNK5, "${DEV}:${CAN_LINE}:1:StartBehaviour.SELN NPP" )
+  field( LNK5, "${DEV}:${CAN_LINE}:1:StartBehaviour_.SELN NPP" )
   #field( DO6, "" )
-  field( LNK6, "${DEV}:${CAN_LINE}:1:StartBehaviour.VAL NPP" )
+  field( LNK6, "${DEV}:${CAN_LINE}:1:StartBehaviour_.VAL NPP" )
 
   field( DO7, "$(CH_SEL_MOD_2)" )                    # Channels to execute (binary)
   field( LNK7, "${DEV}:${CAN_LINE}:2:GroupSelection.VAL NPP" )
   field( DO8, "4" ) # 4 is equal to Current
-  field( LNK8, "${DEV}:${CAN_LINE}:2:StartBehaviour.SELN NPP" )
+  field( LNK8, "${DEV}:${CAN_LINE}:2:StartBehaviour_.SELN NPP" )
   #field( DO9, "" )
-  field( LNK9, "${DEV}:${CAN_LINE}:2:StartBehaviour.VAL NPP" )
+  field( LNK9, "${DEV}:${CAN_LINE}:2:StartBehaviour_.VAL NPP" )
 
-  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet2" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet2_" )
 }
 
-record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet2") {    #each "block" is one Module
+record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet2_") {    #each "block" is one Module
   field( SELM, "All" )
 
   field( DO1, "$(CH_SEL_MOD_3)" )                  # Channels to execute (binary) 
   field( LNK1, "${DEV}:${CAN_LINE}:3:GroupSelection.VAL NPP")
   field( DO2, "4" ) # 4 is equal to Current
-  field( LNK2, "${DEV}:${CAN_LINE}:3:StartBehaviour.SELN NPP")
+  field( LNK2, "${DEV}:${CAN_LINE}:3:StartBehaviour_.SELN NPP")
   #field( DO3, "")
-  field( LNK3, "${DEV}:${CAN_LINE}:3:StartBehaviour.VAL NPP")
+  field( LNK3, "${DEV}:${CAN_LINE}:3:StartBehaviour_.VAL NPP")
 
   field( DO4, "$(CH_SEL_MOD_4)" )                    # Channels to execute (binary)
   field( LNK4, "${DEV}:${CAN_LINE}:4:GroupSelection.VAL NPP" )
   field( DO5, "4" ) # 4 is equal to Current
-  field( LNK5, "${DEV}:${CAN_LINE}:4:StartBehaviour.SELN NPP" )
+  field( LNK5, "${DEV}:${CAN_LINE}:4:StartBehaviour_.SELN NPP" )
   #field( DO6, "" )
-  field( LNK6, "${DEV}:${CAN_LINE}:4:StartBehaviour.VAL NPP" )
+  field( LNK6, "${DEV}:${CAN_LINE}:4:StartBehaviour_.VAL NPP" )
 
   field( DO7, "$(CH_SEL_MOD_5)" )                    # Channels to execute (binary)
   field( LNK7, "${DEV}:${CAN_LINE}:5:GroupSelection.VAL NPP" )
   field( DO8, "4" ) # 4 is equal to Current
-  field( LNK8, "${DEV}:${CAN_LINE}:5:StartBehaviour.SELN NPP" )
+  field( LNK8, "${DEV}:${CAN_LINE}:5:StartBehaviour_.SELN NPP" )
   #field( DO9, "" )
-  field( LNK9, "${DEV}:${CAN_LINE}:5:StartBehaviour.VAL NPP" )
+  field( LNK9, "${DEV}:${CAN_LINE}:5:StartBehaviour_.VAL NPP" )
 
-  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:Start" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:Start_" )
 }
 
 ###########################################################################
@@ -219,68 +219,68 @@ record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentSet2") {    #each "block" is 
 record(dfanout, "${DEV}:${CAN_LINE}:${GROUP}:DelayedTripTimeSet") {    #USE THIS RECORD FOR CSS AS VOLTAGE SET
   field( SELM, "All" )
   field( EGU, "s")
-  field( OUTA, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet.DO3 NPP")
-  field( OUTB, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet.DO6 NPP")
-  field( OUTC, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet.DO9 NPP")
-  field( OUTD, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet2.DO3 NPP")
-  field( OUTE, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet2.DO6 NPP")
-  field( OUTF, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet2.DO9 NPP")
-  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet PP")
+  field( OUTA, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet_.DO3 NPP")
+  field( OUTB, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet_.DO6 NPP")
+  field( OUTC, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet_.DO9 NPP")
+  field( OUTD, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet2_.DO3 NPP")
+  field( OUTE, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet2_.DO6 NPP")
+  field( OUTF, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet2_.DO9 NPP")
+  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet_ PP")
 }
 
-record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet") {    #each "block" is one Module
+record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet_") {    #each "block" is one Module
   field( SELM, "All" )
 
   field( DO1, "$(CH_SEL_MOD_0)" )                  # Channels to execute (binary)   (here channel: 7)
   field( LNK1, "${DEV}:${CAN_LINE}:0:GroupSelection.VAL NPP")
   field( DO2, "8" ) # 4 is equal to DelayedTripTime
-  field( LNK2, "${DEV}:${CAN_LINE}:0:StartBehaviour.SELN NPP")
+  field( LNK2, "${DEV}:${CAN_LINE}:0:StartBehaviour_.SELN NPP")
   #field( DO3, "")
-  field( LNK3, "${DEV}:${CAN_LINE}:0:StartBehaviour.VAL NPP")
+  field( LNK3, "${DEV}:${CAN_LINE}:0:StartBehaviour_.VAL NPP")
 
   field( DO4, "$(CH_SEL_MOD_1)" )                    # Channels to execute (binary)
   field( LNK4, "${DEV}:${CAN_LINE}:1:GroupSelection.VAL NPP" )
   field( DO5, "8" ) # 4 is equal to DelayedTripTime
-  field( LNK5, "${DEV}:${CAN_LINE}:1:StartBehaviour.SELN NPP" )
+  field( LNK5, "${DEV}:${CAN_LINE}:1:StartBehaviour_.SELN NPP" )
   #field( DO6, "" )
-  field( LNK6, "${DEV}:${CAN_LINE}:1:StartBehaviour.VAL NPP" )
+  field( LNK6, "${DEV}:${CAN_LINE}:1:StartBehaviour_.VAL NPP" )
 
   field( DO7, "$(CH_SEL_MOD_2)" )                    # Channels to execute (binary)
   field( LNK7, "${DEV}:${CAN_LINE}:2:GroupSelection.VAL NPP" )
   field( DO8, "8" ) # 4 is equal to DelayedTripTime
-  field( LNK8, "${DEV}:${CAN_LINE}:2:StartBehaviour.SELN NPP" )
+  field( LNK8, "${DEV}:${CAN_LINE}:2:StartBehaviour_.SELN NPP" )
   #field( DO9, "" )
-  field( LNK9, "${DEV}:${CAN_LINE}:2:StartBehaviour.VAL NPP" )
+  field( LNK9, "${DEV}:${CAN_LINE}:2:StartBehaviour_.VAL NPP" )
 
-  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet2" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet2_" )
 }
 
-record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet2") {    #each "block" is one Module
+record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet2_") {    #each "block" is one Module
   field( SELM, "All" )
 
   field( DO1, "$(CH_SEL_MOD_3)" )                  # Channels to execute (binary)   (here channel: 7)
   field( LNK1, "${DEV}:${CAN_LINE}:3:GroupSelection.VAL NPP")
   field( DO2, "8" ) # 4 is equal to DelayedTripTime
-  field( LNK2, "${DEV}:${CAN_LINE}:3:StartBehaviour.SELN NPP")
+  field( LNK2, "${DEV}:${CAN_LINE}:3:StartBehaviour_.SELN NPP")
   #field( DO3, "")
-  field( LNK3, "${DEV}:${CAN_LINE}:3:StartBehaviour.VAL NPP")
+  field( LNK3, "${DEV}:${CAN_LINE}:3:StartBehaviour_.VAL NPP")
 
   field( DO4, "$(CH_SEL_MOD_4)" )                    # Channels to execute (binary)
   field( LNK4, "${DEV}:${CAN_LINE}:4:GroupSelection.VAL NPP" )
   field( DO5, "8" ) # 4 is equal to DelayedTripTime
 
-  field( LNK5, "${DEV}:${CAN_LINE}:4:StartBehaviour.SELN NPP" )
+  field( LNK5, "${DEV}:${CAN_LINE}:4:StartBehaviour_.SELN NPP" )
   #field( DO6, "" )
-  field( LNK6, "${DEV}:${CAN_LINE}:4:StartBehaviour.VAL NPP" )
+  field( LNK6, "${DEV}:${CAN_LINE}:4:StartBehaviour_.VAL NPP" )
 
   field( DO7, "$(CH_SEL_MOD_5)" )                    # Channels to execute (binary)
   field( LNK7, "${DEV}:${CAN_LINE}:5:GroupSelection.VAL NPP" )
   field( DO8, "8" ) # 4 is equal to DelayedTripTime
-  field( LNK8, "${DEV}:${CAN_LINE}:5:StartBehaviour.SELN NPP" )
+  field( LNK8, "${DEV}:${CAN_LINE}:5:StartBehaviour_.SELN NPP" )
   #field( DO9, "" )
-  field( LNK9, "${DEV}:${CAN_LINE}:5:StartBehaviour.VAL NPP" )
+  field( LNK9, "${DEV}:${CAN_LINE}:5:StartBehaviour_.VAL NPP" )
 
-  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:Start" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:Start_" )
 }
 
 ###########################################################################
@@ -290,68 +290,68 @@ record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqDelayedTripTimeSet2") {    #each "bl
 record(dfanout, "${DEV}:${CAN_LINE}:${GROUP}:VoltageBoundsSet") {    #USE THIS RECORD FOR CSS AS VOLTAGE SET
   field( SELM, "All" )
   field( EGU, "V")
-  field( OUTA, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageBoundsSet.DO3 NPP")
-  field( OUTB, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageBoundsSet.DO6 NPP")
-  field( OUTC, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageBoundsSet.DO9 NPP")
-  field( OUTD, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageBoundsSet2.DO3 NPP")
-  field( OUTE, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageBoundsSet2.DO6 NPP")
-  field( OUTF, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageBoundsSet2.DO9 NPP")
-  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageBoundsSet PP")
+  field( OUTA, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageBoundsSet_.DO3 NPP")
+  field( OUTB, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageBoundsSet_.DO6 NPP")
+  field( OUTC, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageBoundsSet_.DO9 NPP")
+  field( OUTD, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageBoundsSet2_.DO3 NPP")
+  field( OUTE, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageBoundsSet2_.DO6 NPP")
+  field( OUTF, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageBoundsSet2_.DO9 NPP")
+  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageBoundsSet_ PP")
 }
 
-record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageBoundsSet") {    #each "block" is one Module
+record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageBoundsSet_") {    #each "block" is one Module
   field( SELM, "All" )
 
   field( DO1, "$(CH_SEL_MOD_0)" )           	        # Channels to execute (binary)
   field( LNK1, "${DEV}:${CAN_LINE}:0:GroupSelection.VAL NPP")
-  field( DO2, "16" ) 			# 16 is equal to EmergancySet
-  field( LNK2, "${DEV}:${CAN_LINE}:0:StartBehaviour.SELN NPP")
+  field( DO2, "16" ) 			# 16 is equal to EmergencySet
+  field( LNK2, "${DEV}:${CAN_LINE}:0:StartBehaviour_.SELN NPP")
   #field( DO3, "")
-  field( LNK3, "${DEV}:${CAN_LINE}:0:StartBehaviour.VAL NPP")
+  field( LNK3, "${DEV}:${CAN_LINE}:0:StartBehaviour_.VAL NPP")
 
   field( DO4, "$(CH_SEL_MOD_1)" )                     # Channels to execute (binary)
   field( LNK4, "${DEV}:${CAN_LINE}:1:GroupSelection.VAL NPP" )
-  field( DO5, "16" ) 			# 16 is equal to EmergancySet
-  field( LNK5, "${DEV}:${CAN_LINE}:1:StartBehaviour.SELN NPP" )
+  field( DO5, "16" ) 			# 16 is equal to EmergencySet
+  field( LNK5, "${DEV}:${CAN_LINE}:1:StartBehaviour_.SELN NPP" )
   #field( DO6, "" )
-  field( LNK6, "${DEV}:${CAN_LINE}:1:StartBehaviour.VAL NPP" )
+  field( LNK6, "${DEV}:${CAN_LINE}:1:StartBehaviour_.VAL NPP" )
 
   field( DO7, "$(CH_SEL_MOD_2)" )                     # Channels to execute (binary)
   field( LNK7, "${DEV}:${CAN_LINE}:2:GroupSelection.VAL NPP" )
-  field( DO8, "16" ) 			# 16 is equal to EmergancySet
-  field( LNK8, "${DEV}:${CAN_LINE}:2:StartBehaviour.SELN NPP" )
+  field( DO8, "16" ) 			# 16 is equal to EmergencySet
+  field( LNK8, "${DEV}:${CAN_LINE}:2:StartBehaviour_.SELN NPP" )
   #field( DO9, "" )
-  field( LNK9, "${DEV}:${CAN_LINE}:2:StartBehaviour.VAL NPP" )
+  field( LNK9, "${DEV}:${CAN_LINE}:2:StartBehaviour_.VAL NPP" )
 
-  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageBoundsSet2" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageBoundsSet2_" )
 }
 
-record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageBoundsSet2") {    #each "block" is one Module
+record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqVoltageBoundsSet2_") {    #each "block" is one Module
   field( SELM, "All" )
 
   field( DO1, "$(CH_SEL_MOD_3)" )           	        # Channels to execute (binary)
 
   field( LNK1, "${DEV}:${CAN_LINE}:3:GroupSelection.VAL NPP")
-  field( DO2, "16" ) 			# 16 is equal to EmergancySet
-  field( LNK2, "${DEV}:${CAN_LINE}:3:StartBehaviour.SELN NPP")
+  field( DO2, "16" ) 			# 16 is equal to EmergencySet
+  field( LNK2, "${DEV}:${CAN_LINE}:3:StartBehaviour_.SELN NPP")
   #field( DO3, "")
-  field( LNK3, "${DEV}:${CAN_LINE}:3:StartBehaviour.VAL NPP")
+  field( LNK3, "${DEV}:${CAN_LINE}:3:StartBehaviour_.VAL NPP")
 
   field( DO4, "$(CH_SEL_MOD_4)" )                     # Channels to execute (binary)
   field( LNK4, "${DEV}:${CAN_LINE}:4:GroupSelection.VAL NPP" )
-  field( DO5, "16" ) 			# 16 is equal to EmergancySet
-  field( LNK5, "${DEV}:${CAN_LINE}:4:StartBehaviour.SELN NPP" )
+  field( DO5, "16" ) 			# 16 is equal to EmergencySet
+  field( LNK5, "${DEV}:${CAN_LINE}:4:StartBehaviour_.SELN NPP" )
   #field( DO6, "" )
-  field( LNK6, "${DEV}:${CAN_LINE}:4:StartBehaviour.VAL NPP" )
+  field( LNK6, "${DEV}:${CAN_LINE}:4:StartBehaviour_.VAL NPP" )
 
   field( DO7, "$(CH_SEL_MOD_5)" )                     # Channels to execute (binary)
   field( LNK7, "${DEV}:${CAN_LINE}:5:GroupSelection.VAL NPP" )
-  field( DO8, "16" ) 			# 16 is equal to EmergancySet
-  field( LNK8, "${DEV}:${CAN_LINE}:5:StartBehaviour.SELN NPP" )
+  field( DO8, "16" ) 			# 16 is equal to EmergencySet
+  field( LNK8, "${DEV}:${CAN_LINE}:5:StartBehaviour_.SELN NPP" )
   #field( DO9, "" )
-  field( LNK9, "${DEV}:${CAN_LINE}:5:StartBehaviour.VAL NPP" )
+  field( LNK9, "${DEV}:${CAN_LINE}:5:StartBehaviour_.VAL NPP" )
 
-  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:Start" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:Start_" )
 }
 
 ###########################################################################
@@ -362,141 +362,141 @@ record(dfanout, "${DEV}:${CAN_LINE}:${GROUP}:CurrentBoundsSet") {    #USE THIS R
   field( SELM, "All" )
   field( EGU, "A")
   field( PREC, "4")
-  field( OUTA, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentBoundsSet.DO3 NPP")
-  field( OUTB, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentBoundsSet.DO6 NPP")
-  field( OUTC, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentBoundsSet.DO9 NPP")
-  field( OUTD, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentBoundsSet2.DO3 NPP")
-  field( OUTE, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentBoundsSet2.DO6 NPP")
-  field( OUTF, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentBoundsSet2.DO9 NPP")
-  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentBoundsSet PP")
+  field( OUTA, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentBoundsSet_.DO3 NPP")
+  field( OUTB, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentBoundsSet_.DO6 NPP")
+  field( OUTC, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentBoundsSet_.DO9 NPP")
+  field( OUTD, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentBoundsSet2_.DO3 NPP")
+  field( OUTE, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentBoundsSet2_.DO6 NPP")
+  field( OUTF, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentBoundsSet2_.DO9 NPP")
+  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentBoundsSet_ PP")
 }
 
-record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentBoundsSet") {    #each "block" is one Module
+record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentBoundsSet_") {    #each "block" is one Module
   field( SELM, "All" )
 
   field( DO1, "$(CH_SEL_MOD_0)" )           	        # Channels to execute (binary)
   field( LNK1, "${DEV}:${CAN_LINE}:0:GroupSelection.VAL NPP")
-  field( DO2, "32" ) 			# 32 is equal to EmergancySet
-  field( LNK2, "${DEV}:${CAN_LINE}:0:StartBehaviour.SELN NPP")
+  field( DO2, "32" ) 			# 32 is equal to EmergencySet
+  field( LNK2, "${DEV}:${CAN_LINE}:0:StartBehaviour_.SELN NPP")
   #field( DO3, "")
-  field( LNK3, "${DEV}:${CAN_LINE}:0:StartBehaviour.VAL NPP")
+  field( LNK3, "${DEV}:${CAN_LINE}:0:StartBehaviour_.VAL NPP")
 
   field( DO4, "$(CH_SEL_MOD_1)" )                     # Channels to execute (binary)
   field( LNK4, "${DEV}:${CAN_LINE}:1:GroupSelection.VAL NPP" )
-  field( DO5, "32" ) 			# 32 is equal to EmergancySet
-  field( LNK5, "${DEV}:${CAN_LINE}:1:StartBehaviour.SELN NPP" )
+  field( DO5, "32" ) 			# 32 is equal to EmergencySet
+  field( LNK5, "${DEV}:${CAN_LINE}:1:StartBehaviour_.SELN NPP" )
   #field( DO6, "" )
-  field( LNK6, "${DEV}:${CAN_LINE}:1:StartBehaviour.VAL NPP" )
+  field( LNK6, "${DEV}:${CAN_LINE}:1:StartBehaviour_.VAL NPP" )
 
   field( DO7, "$(CH_SEL_MOD_2)" )                     # Channels to execute (binary)
   field( LNK7, "${DEV}:${CAN_LINE}:2:GroupSelection.VAL NPP" )
-  field( DO8, "32" ) 			# 32 is equal to EmergancySet
-  field( LNK8, "${DEV}:${CAN_LINE}:2:StartBehaviour.SELN NPP" )
+  field( DO8, "32" ) 			# 32 is equal to EmergencySet
+  field( LNK8, "${DEV}:${CAN_LINE}:2:StartBehaviour_.SELN NPP" )
   #field( DO9, "" )
-  field( LNK9, "${DEV}:${CAN_LINE}:2:StartBehaviour.VAL NPP" )
+  field( LNK9, "${DEV}:${CAN_LINE}:2:StartBehaviour_.VAL NPP" )
 
-  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentBoundsSet2" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentBoundsSet2_" )
 }
 
-record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentBoundsSet2") {    #each "block" is one Module
+record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqCurrentBoundsSet2_") {    #each "block" is one Module
   field( SELM, "All" )
 
   field( DO1, "$(CH_SEL_MOD_3)" )           	        # Channels to execute (binary)
   field( LNK1, "${DEV}:${CAN_LINE}:3:GroupSelection.VAL NPP")
-  field( DO2, "32" ) 			# 32 is equal to EmergancySet
-  field( LNK2, "${DEV}:${CAN_LINE}:3:StartBehaviour.SELN NPP")
+  field( DO2, "32" ) 			# 32 is equal to EmergencySet
+  field( LNK2, "${DEV}:${CAN_LINE}:3:StartBehaviour_.SELN NPP")
   #field( DO3, "")
-  field( LNK3, "${DEV}:${CAN_LINE}:3:StartBehaviour.VAL NPP")
+  field( LNK3, "${DEV}:${CAN_LINE}:3:StartBehaviour_.VAL NPP")
 
   field( DO4, "$(CH_SEL_MOD_4)" )                     # Channels to execute (binary)
   field( LNK4, "${DEV}:${CAN_LINE}:4:GroupSelection.VAL NPP" )
-  field( DO5, "32" ) 			# 32 is equal to EmergancySet
-  field( LNK5, "${DEV}:${CAN_LINE}:4:StartBehaviour.SELN NPP" )
+  field( DO5, "32" ) 			# 32 is equal to EmergencySet
+  field( LNK5, "${DEV}:${CAN_LINE}:4:StartBehaviour_.SELN NPP" )
   #field( DO6, "" )
-  field( LNK6, "${DEV}:${CAN_LINE}:4:StartBehaviour.VAL NPP" )
+  field( LNK6, "${DEV}:${CAN_LINE}:4:StartBehaviour_.VAL NPP" )
 
   field( DO7, "$(CH_SEL_MOD_5)" )                     # Channels to execute (binary)
   field( LNK7, "${DEV}:${CAN_LINE}:5:GroupSelection.VAL NPP" )
-  field( DO8, "32" ) 			# 32 is equal to EmergancySet
-  field( LNK8, "${DEV}:${CAN_LINE}:5:StartBehaviour.SELN NPP" )
+  field( DO8, "32" ) 			# 32 is equal to EmergencySet
+  field( LNK8, "${DEV}:${CAN_LINE}:5:StartBehaviour_.SELN NPP" )
   #field( DO9, "" )
-  field( LNK9, "${DEV}:${CAN_LINE}:5:StartBehaviour.VAL NPP" )
+  field( LNK9, "${DEV}:${CAN_LINE}:5:StartBehaviour_.VAL NPP" )
 
-  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:Start" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:Start_" )
 }
 
 ###########################################################################
-##################       Emergancy Set           ##########################
+##################       Emergency Set           ##########################
 ###########################################################################
 
-record(dfanout, "${DEV}:${CAN_LINE}:${GROUP}:EmergancySet") {    #USE THIS RECORD FOR CSS AS VOLTAGE SET
+record(dfanout, "${DEV}:${CAN_LINE}:${GROUP}:EmergencySet") {    #USE THIS RECORD FOR CSS AS VOLTAGE SET
   field( SELM, "All" )
-  field( OUTA, "${DEV}:${CAN_LINE}:${GROUP}:SeqEmergancySet.DO3 NPP")
-  field( OUTB, "${DEV}:${CAN_LINE}:${GROUP}:SeqEmergancySet.DO6 NPP")
-  field( OUTC, "${DEV}:${CAN_LINE}:${GROUP}:SeqEmergancySet.DO9 NPP")
-  field( OUTD, "${DEV}:${CAN_LINE}:${GROUP}:SeqEmergancySet2.DO3 NPP")
-  field( OUTE, "${DEV}:${CAN_LINE}:${GROUP}:SeqEmergancySet2.DO6 NPP")
-  field( OUTF, "${DEV}:${CAN_LINE}:${GROUP}:SeqEmergancySet2.DO9 NPP")
-  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqEmergancySet PP")
+  field( OUTA, "${DEV}:${CAN_LINE}:${GROUP}:SeqEmergencySet_.DO3 NPP")
+  field( OUTB, "${DEV}:${CAN_LINE}:${GROUP}:SeqEmergencySet_.DO6 NPP")
+  field( OUTC, "${DEV}:${CAN_LINE}:${GROUP}:SeqEmergencySet_.DO9 NPP")
+  field( OUTD, "${DEV}:${CAN_LINE}:${GROUP}:SeqEmergencySet2_.DO3 NPP")
+  field( OUTE, "${DEV}:${CAN_LINE}:${GROUP}:SeqEmergencySet2_.DO6 NPP")
+  field( OUTF, "${DEV}:${CAN_LINE}:${GROUP}:SeqEmergencySet2_.DO9 NPP")
+  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqEmergencySet_ PP")
 }
 
-record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqEmergancySet") {    #each "block" is one Module
+record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqEmergencySet_") {    #each "block" is one Module
   field( SELM, "All" )
 
   field( DO1, "$(CH_SEL_MOD_0)" )           	        # Channels to execute (binary)   (here channel: 7)
   field( LNK1, "${DEV}:${CAN_LINE}:0:GroupSelection.VAL NPP")
-  field( DO2, "64" ) 			# 64 is equal to EmergancySet
-  field( LNK2, "${DEV}:${CAN_LINE}:0:StartBehaviour.SELN NPP")
+  field( DO2, "64" ) 			# 64 is equal to EmergencySet
+  field( LNK2, "${DEV}:${CAN_LINE}:0:StartBehaviour_.SELN NPP")
   #field( DO3, "")
-  field( LNK3, "${DEV}:${CAN_LINE}:0:StartBehaviour.VAL NPP")
+  field( LNK3, "${DEV}:${CAN_LINE}:0:StartBehaviour_.VAL NPP")
 
   field( DO4, "$(CH_SEL_MOD_1)" )                     # Channels to execute (binary)
   field( LNK4, "${DEV}:${CAN_LINE}:1:GroupSelection.VAL NPP" )
-  field( DO5, "64" ) 			# 64 is equal to EmergancySet
-  field( LNK5, "${DEV}:${CAN_LINE}:1:StartBehaviour.SELN NPP" )
+  field( DO5, "64" ) 			# 64 is equal to EmergencySet
+  field( LNK5, "${DEV}:${CAN_LINE}:1:StartBehaviour_.SELN NPP" )
   #field( DO6, "" )
-  field( LNK6, "${DEV}:${CAN_LINE}:1:StartBehaviour.VAL NPP" )
+  field( LNK6, "${DEV}:${CAN_LINE}:1:StartBehaviour_.VAL NPP" )
 
   field( DO7, "$(CH_SEL_MOD_2)" )                     # Channels to execute (binary)
   field( LNK7, "${DEV}:${CAN_LINE}:2:GroupSelection.VAL NPP" )
-  field( DO8, "64" ) 			# 64 is equal to EmergancySet
-  field( LNK8, "${DEV}:${CAN_LINE}:2:StartBehaviour.SELN NPP" )
+  field( DO8, "64" ) 			# 64 is equal to EmergencySet
+  field( LNK8, "${DEV}:${CAN_LINE}:2:StartBehaviour_.SELN NPP" )
   #field( DO9, "" )
-  field( LNK9, "${DEV}:${CAN_LINE}:2:StartBehaviour.VAL NPP" )
+  field( LNK9, "${DEV}:${CAN_LINE}:2:StartBehaviour_.VAL NPP" )
 
-  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqEmergancySet2" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:SeqEmergencySet2_" )
 }
 
-record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqEmergancySet2") {    #each "block" is one Module
+record(seq, "${DEV}:${CAN_LINE}:${GROUP}:SeqEmergencySet2_") {    #each "block" is one Module
   field( SELM, "All" )
 
   field( DO1, "$(CH_SEL_MOD_3)" )           	        # Channels to execute (binary)   (here channel: 7)
   field( LNK1, "${DEV}:${CAN_LINE}:3:GroupSelection.VAL NPP")
-  field( DO2, "64" ) 			# 64 is equal to EmergancySet
-  field( LNK2, "${DEV}:${CAN_LINE}:3:StartBehaviour.SELN NPP")
+  field( DO2, "64" ) 			# 64 is equal to EmergencySet
+  field( LNK2, "${DEV}:${CAN_LINE}:3:StartBehaviour_.SELN NPP")
   #field( DO3, "")
-  field( LNK3, "${DEV}:${CAN_LINE}:3:StartBehaviour.VAL NPP")
+  field( LNK3, "${DEV}:${CAN_LINE}:3:StartBehaviour_.VAL NPP")
 
   field( DO4, "$(CH_SEL_MOD_4)" )                     # Channels to execute (binary)
   field( LNK4, "${DEV}:${CAN_LINE}:4:GroupSelection.VAL NPP" )
-  field( DO5, "64" ) 			# 64 is equal to EmergancySet
-  field( LNK5, "${DEV}:${CAN_LINE}:4:StartBehaviour.SELN NPP" )
+  field( DO5, "64" ) 			# 64 is equal to EmergencySet
+  field( LNK5, "${DEV}:${CAN_LINE}:4:StartBehaviour_.SELN NPP" )
   #field( DO6, "" )
-  field( LNK6, "${DEV}:${CAN_LINE}:4:StartBehaviour.VAL NPP" )
+  field( LNK6, "${DEV}:${CAN_LINE}:4:StartBehaviour_.VAL NPP" )
 
   field( DO7, "$(CH_SEL_MOD_5)" )                     # Channels to execute (binary)
   field( LNK7, "${DEV}:${CAN_LINE}:5:GroupSelection.VAL NPP" )
-  field( DO8, "64" ) 			# 64 is equal to EmergancySet
-  field( LNK8, "${DEV}:${CAN_LINE}:5:StartBehaviour.SELN NPP" )
+  field( DO8, "64" ) 			# 64 is equal to EmergencySet
+  field( LNK8, "${DEV}:${CAN_LINE}:5:StartBehaviour_.SELN NPP" )
   #field( DO9, "" )
-  field( LNK9, "${DEV}:${CAN_LINE}:5:StartBehaviour.VAL NPP" )
+  field( LNK9, "${DEV}:${CAN_LINE}:5:StartBehaviour_.VAL NPP" )
 
-  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:Start" )
+  field( FLNK, "${DEV}:${CAN_LINE}:${GROUP}:Start_" )
 }
 
 ##################################
 
-record(dfanout, "${DEV}:${CAN_LINE}:${GROUP}:Start"){
+record(dfanout, "${DEV}:${CAN_LINE}:${GROUP}:Start_"){
   field( OUTA, "${DEV}:${CAN_LINE}:0:GroupSelection.PROC" )
   field( OUTB, "${DEV}:${CAN_LINE}:1:GroupSelection.PROC" )
   field( OUTC, "${DEV}:${CAN_LINE}:2:GroupSelection.PROC" )
@@ -531,8 +531,8 @@ record(dfanout, "${DEV}:${CAN_LINE}:${GROUP}:Start"){
 #  field( INP,  "${DEV}:${CAN_LINE}:${GROUP}:CurrentBoundsSet.VAL" )
 #}
 
-#record( bi, "${DEV}:${CAN_LINE}:${GROUP}:Save:EmergancySet" ) {
-#  field( INP,  "${DEV}:${CAN_LINE}:${GROUP}:EmergancySet.VAL" )
+#record( bi, "${DEV}:${CAN_LINE}:${GROUP}:Save:EmergencySet" ) {
+#  field( INP,  "${DEV}:${CAN_LINE}:${GROUP}:EmergencySet.VAL" )
 #}
 
 ###########################################################################
@@ -569,10 +569,10 @@ record(dfanout, "${DEV}:${CAN_LINE}:${GROUP}:Start"){
 #  field( OUT, "${DEV}:${CAN_LINE}:${GROUP}:CurrentBoundsSet.VAL NPP" )
 #}
 
-#record( bo, "${DEV}:${CAN_LINE}:${GROUP}:Load:EmergancySet" ) {
+#record( bo, "${DEV}:${CAN_LINE}:${GROUP}:Load:EmergencySet" ) {
 #  field( OMSL, "closed_loop")
-#  field( DOL, "${DEV}:${CAN_LINE}:${GROUP}:Save:EmergancySet.VAL")
-#  field( OUT, "${DEV}:${CAN_LINE}:${GROUP}:EmergancySet.VAL NPP" )
+#  field( DOL, "${DEV}:${CAN_LINE}:${GROUP}:Save:EmergencySet.VAL")
+#  field( OUT, "${DEV}:${CAN_LINE}:${GROUP}:EmergencySet.VAL NPP" )
 #}
 
 ###########################################################################
@@ -592,7 +592,7 @@ record(dfanout, "${DEV}:${CAN_LINE}:${GROUP}:Start"){
 #  field( LNK3, "${DEV}:${CAN_LINE}:${GROUP}:Save:DelayedTripTimeSet.PROC")
 #  field( LNK4, "${DEV}:${CAN_LINE}:${GROUP}:Save:VoltageBoundsSet.PROC")
 #  field( LNK5, "${DEV}:${CAN_LINE}:${GROUP}:Save:CurrentBoundsSet.PROC")
-#  field( LNK6, "${DEV}:${CAN_LINE}:${GROUP}:Save:EmergancySet.PROC")
+#  field( LNK6, "${DEV}:${CAN_LINE}:${GROUP}:Save:EmergencySet.PROC")
 #}
 
 ###########################################################################
@@ -612,6 +612,6 @@ record(dfanout, "${DEV}:${CAN_LINE}:${GROUP}:Start"){
 #  field( LNK3, "${DEV}:${CAN_LINE}:${GROUP}:Load:DelayedTripTimeSet.PROC")
 #  field( LNK4, "${DEV}:${CAN_LINE}:${GROUP}:Load:VoltageBoundsSet.PROC")
 #  field( LNK5, "${DEV}:${CAN_LINE}:${GROUP}:Load:CurrentBoundsSet.PROC")
-#  field( LNK6, "${DEV}:${CAN_LINE}:${GROUP}:Load:EmergancySet.PROC")
+#  field( LNK6, "${DEV}:${CAN_LINE}:${GROUP}:Load:EmergencySet.PROC")
 #}
 
